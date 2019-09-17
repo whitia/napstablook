@@ -1,2 +1,21 @@
-<h1>Users#new</h1>
-<p>Find me in app/views/users/new.html.erb</p>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_with model: @user, local: true do |form| %>
+      <%= render 'shared/error_messages' %>
+
+      <%= form.label :name, 'ユーザー名' %>
+      <%= form.text_field :name %>
+
+      <%= form.label :email, 'メールアドレス' %>
+      <%= form.email_field :email %>
+
+      <%= form.label :password, 'パスワード' %>
+      <%= form.password_field :password %>
+
+      <%= form.label :password_confirmation, 'パスワード（確認）' %>
+      <%= form.password_field :password_confirmation %>
+
+      <%= form.submit "Create my account", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
