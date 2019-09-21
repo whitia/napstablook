@@ -64,3 +64,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'bcrypt'
 gem 'bootstrap'
 gem 'jquery-rails'
+gem 'roo'
