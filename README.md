@@ -1,24 +1,4 @@
-# README
+# TODO
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* [【Ruby on Rails】CSVインポート](https://qiita.com/seitarooodayo/items/c9d6955a12ca0b1fd1d4)
+* [RailsでCSVインポート機能を実装する](https://www.uosansatox.biz/entry/2018/02/14/152734)
