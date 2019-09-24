@@ -1,32 +1,49 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-lg-12">
+
+      <%= form_with url: import_user_funds_path, multipart: true do |form| %>
+        <%= file_field_tag :file %>
+        <%= submit_tag "インポート" %>
+      <% end %>
  
       <h4 class="my-3">Funds</h4>
-      <table class="table small">
+      <table class="table table-sm table-bordered small">
         <thead>
           <tr class="bg-info text-white">
-            <th width="50%">ファンド名</th>
-            <th width="5%">クラス</th>
-            <th width="5%">種別</th>
-            <th width="8%">買付金額</th>
-            <th width="8%">評価金額</th>
-            <th width="8%">評価損益</th>
-            <th width="8%">増資金額</th>
-            <th width="8%">増資後</th>
+            <th width="54%">名称</th>
+            <th width="6%">資産種別</th>
+            <th width="10%">口座種別</th>
+            <th width="10%">買付金額</th>
+            <th width="10%">評価金額</th>
+            <th width="10%">評価損益</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>三菱ＵＦＪ国際−ｅＭＡＸＩＳ Ｓｌｉｍ 全世界株式（除く日本）</td>
-            <td>先株</td>
-            <td>特定</td>
-            <td>50,000</td>
-            <td>49,362</td>
-            <td>-738</td>
-            <td></td>
-            <td>49,362</td>
-          </tr>
+          <% @funds.each do |fund| %>
+            <tr>
+              <td class="align-middle"><%= fund.name %></td>
+              <td>
+                <select class="custom-select custom-select-sm" id="exampleFormControlSelect1">
+                  <option></option>
+                  <option>国株</option>
+                  <option>国債</option>
+                  <option>国不</option>
+                  <option>先株</option>
+                  <option>先債</option>
+                  <option>先不</option>
+                  <option>新株</option>
+                  <option>新債</option>
+                  <option>新不</option>
+                  <option>他</option>
+                </select>
+              </td>
+              <td class="align-middle"><%= fund.account %></td>
+              <td class="align-middle text-right"><%= fund.purchase.to_s(:delimited) %></td>
+              <td class="align-middle text-right"><%= fund.valuation.to_s(:delimited) %></td>
+              <td class="align-middle text-right"><%= (fund.purchase - fund.valuation).to_s(:delimited) %></td>
+            </tr>
+          <% end %>
         </tbody>
       </table>
 

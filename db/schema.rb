@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_18_084107) do
+ActiveRecord::Schema.define(version: 2019_09_24_193559) do
 
   create_table "funds", force: :cascade do |t|
     t.string "name"
-    t.string "class"
-    t.string "type"
+    t.string "category"
+    t.string "account"
     t.integer "purchase"
     t.integer "valuation"
     t.datetime "created_at", null: false

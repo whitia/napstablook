@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
   resources :users do
-    resources :funds
+    resources :funds do
+      collection { post :import }
+    end
   end
 end
