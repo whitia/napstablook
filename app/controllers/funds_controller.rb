@@ -32,4 +32,10 @@ class FundsController < ApplicationController
     redirect_to user_funds_path
   end
 
+  def set_category
+    fund = Fund.find(params[:id])
+    fund.update(category: params[:category])
+    render json: { status: 'success' }
+  end
+
 end

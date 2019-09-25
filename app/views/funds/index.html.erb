@@ -4,19 +4,15 @@
       <h4 class="my-3">インポート</h4>
       <%= form_with url: import_user_funds_path, multipart: true do |form| %>
         <div class="input-group">
-          <%= text_field_tag 'file_name', '', class: 'form-control border-info', onclick: '$("#file").click();', :placeholder => 'ここをクリックしてファイルを選択してください' %>
-          <%= file_field_tag :file, style: 'display: none', onchange: 'selected($(this));' %>
+          <%= text_field_tag 'file_name', '', class: 'form-control border-info',
+                                              onclick: '$("#file").click();',
+                                              :placeholder => 'ここをクリックしてファイルを選択してください' %>
+          <%= file_field_tag :file, style: 'display: none', onchange: 'file_selected($(this));' %>
           <div class="input-group-append">
-            <%= submit_tag 'インポート', class: 'btn btn-info' %>
+            <%= submit_tag 'インポート', id: 'submit', class: 'btn btn-info' %>
           </div>
         </div>
       <% end %>
-      <script>
-        function selected(file_field) {
-          var file_name = $(file_field)[0].files[0].name;
-          $('#file_name').val(file_name);
-        }
-      </script>
     </div>
 
     <div class="col-sm-12">
@@ -24,20 +20,28 @@
       <table class="table table-sm table-bordered small">
         <thead>
           <tr class="bg-info text-white">
-            <th width="45%" class="text-center">銘柄名</th>
+            <th width="6%" class="text-center">資産種別</th>
             <th width="10%" class="text-center">口座種別</th>
+            <th width="45%" class="text-center">銘柄名</th>
             <th width="8%" class="text-center">買付金額</th>
             <th width="8%" class="text-center">評価金額</th>
             <th width="8%" class="text-center">評価損益</th>
             <th width="15%" class="text-center">増資金額</th>
-            <th width="6%" class="text-center">資産種別</th>
           </tr>
         </thead>
         <tbody>
           <% @funds.each do |fund| %>
             <tr>
-              <td class="align-middle"><%= fund.name %></td>
+              <td>
+                <% categories = { 国株: '国株', 国債: '国債', 国不: '国不', 先株: '先株', 先債: '先債', 先不: '先不', 新株: '新株', 新債: '新債', 新不: '新不', 他: '他' } %>
+                <%= select_tag 'categories', options_for_select(categories, { :selected => fund.category }),
+                                             include_blank: true,
+                                             class: 'custom-select custom-select-sm',
+                                             data: { category_id: fund.id },
+                                             :onchange => 'category_change($(this));' %>
+              </td>
               <td class="align-middle"><%= fund.account %></td>
+              <td class="align-middle"><%= fund.name %></td>
               <td class="align-middle text-right"><%= fund.purchase.to_s(:delimited) %></td>
               <td class="align-middle text-right"><%= fund.valuation.to_s(:delimited) %></td>
               <td class="align-middle text-right<%= ' text-danger' if sub(fund.valuation, fund.purchase) < 0 %>">
@@ -46,24 +50,13 @@
               <td>
                 <input type="number" class="form-control form-control-sm text-right">
               </td>
-              <td>
-                <select class="custom-select custom-select-sm" id="exampleFormControlSelect1">
-                  <option></option>
-                  <option>国株</option>
-                  <option>国債</option>
-                  <option>国不</option>
-                  <option>先株</option>
-                  <option>先債</option>
-                  <option>先不</option>
-                  <option>新株</option>
-                  <option>新債</option>
-                  <option>新不</option>
-                  <option>他</option>
-                </select>
-              </td>
             </tr>
           <% end %>
+          <script>
+            
+          </script>
           <tr>
+            <td></td>
             <td></td>
             <td></td>
             <td class="text-right"><%= @sum_purchase.to_s(:delimited) %></td>
@@ -75,3 +68,33 @@
     </div>
   </div>
 </div>
+
+<script>
+  $('#submit').on('click', function() {
+    if ($('#file_name').val() == '') {
+      alert('ファイルを選択してください');
+      $('#file_name').focus();
+    }
+  });
+  function file_selected(file_field) {
+    var file_name = $(file_field)[0].files[0].name;
+    $('#file_name').val(file_name);
+    $('#submit').focus();
+  }
+  function category_change(selected) {
+    $.ajax({
+      type: 'GET',
+      url: '/funds/set_category',
+      data: {
+        id: selected.data('category-id'),
+        category: selected[0].selectedOptions[0].value
+      },
+      dataType: 'json'
+    })
+    .done(function(data, stat, xhr) {
+    })
+    .fail(function(xhr, stat, err) {
+      alert(err);
+    });
+  }
+</script>

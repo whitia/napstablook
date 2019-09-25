@@ -8,4 +8,5 @@ Rails.application.routes.draw do
       collection { post :import }
     end
   end
+  get '/funds/set_category', to: 'funds#set_category'
 end
