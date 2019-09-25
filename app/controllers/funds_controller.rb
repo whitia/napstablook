@@ -1,6 +1,16 @@
 class FundsController < ApplicationController
   def index
     @funds = Fund.where(user_id: params[:user_id]).order('account DESC')
+
+    @sum_purchase = 0
+    @funds.each do |fund|
+      @sum_purchase += fund.purchase
+    end
+
+    @sum_valuation = 0
+    @funds.each do |fund|
+      @sum_valuation += fund.valuation
+    end
   end
   
   def new
@@ -21,4 +31,5 @@ class FundsController < ApplicationController
     @funds = Fund.where(user_id: params[:user_id]).order('account DESC')
     redirect_to user_funds_path
   end
+
 end

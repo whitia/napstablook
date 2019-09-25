@@ -1,28 +1,51 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-lg-12">
-
+    <div class="col-sm-12">
+      <h4 class="my-3">インポート</h4>
       <%= form_with url: import_user_funds_path, multipart: true do |form| %>
-        <%= file_field_tag :file %>
-        <%= submit_tag "インポート" %>
+        <div class="input-group">
+          <%= text_field_tag 'file_name', '', class: 'form-control border-info', onclick: '$("#file").click();', :placeholder => 'ここをクリックしてファイルを選択してください' %>
+          <%= file_field_tag :file, style: 'display: none', onchange: 'selected($(this));' %>
+          <div class="input-group-append">
+            <%= submit_tag 'インポート', class: 'btn btn-info' %>
+          </div>
+        </div>
       <% end %>
- 
-      <h4 class="my-3">Funds</h4>
+      <script>
+        function selected(file_field) {
+          var file_name = $(file_field)[0].files[0].name;
+          $('#file_name').val(file_name);
+        }
+      </script>
+    </div>
+
+    <div class="col-sm-12">
+      <h4 class="my-3">ファンド一覧</h4>
       <table class="table table-sm table-bordered small">
         <thead>
           <tr class="bg-info text-white">
-            <th width="54%">名称</th>
-            <th width="6%">資産種別</th>
-            <th width="10%">口座種別</th>
-            <th width="10%">買付金額</th>
-            <th width="10%">評価金額</th>
-            <th width="10%">評価損益</th>
+            <th width="45%" class="text-center">銘柄名</th>
+            <th width="10%" class="text-center">口座種別</th>
+            <th width="8%" class="text-center">買付金額</th>
+            <th width="8%" class="text-center">評価金額</th>
+            <th width="8%" class="text-center">評価損益</th>
+            <th width="15%" class="text-center">増資金額</th>
+            <th width="6%" class="text-center">資産種別</th>
           </tr>
         </thead>
         <tbody>
           <% @funds.each do |fund| %>
             <tr>
               <td class="align-middle"><%= fund.name %></td>
+              <td class="align-middle"><%= fund.account %></td>
+              <td class="align-middle text-right"><%= fund.purchase.to_s(:delimited) %></td>
+              <td class="align-middle text-right"><%= fund.valuation.to_s(:delimited) %></td>
+              <td class="align-middle text-right<%= ' text-danger' if sub(fund.valuation, fund.purchase) < 0 %>">
+                <%= sub(fund.valuation, fund.purchase).to_s(:delimited) %>
+              </td>
+              <td>
+                <input type="number" class="form-control form-control-sm text-right">
+              </td>
               <td>
                 <select class="custom-select custom-select-sm" id="exampleFormControlSelect1">
                   <option></option>
@@ -38,15 +61,17 @@
                   <option>他</option>
                 </select>
               </td>
-              <td class="align-middle"><%= fund.account %></td>
-              <td class="align-middle text-right"><%= fund.purchase.to_s(:delimited) %></td>
-              <td class="align-middle text-right"><%= fund.valuation.to_s(:delimited) %></td>
-              <td class="align-middle text-right"><%= (fund.purchase - fund.valuation).to_s(:delimited) %></td>
             </tr>
           <% end %>
+          <tr>
+            <td></td>
+            <td></td>
+            <td class="text-right"><%= @sum_purchase.to_s(:delimited) %></td>
+            <td class="text-right"><%= @sum_valuation.to_s(:delimited) %></td>
+            <td class="text-right<%= ' text-danger' if sub(@sum_valuation, @sum_purchase) < 0 %>"><%= sub(@sum_valuation, @sum_purchase).to_s(:delimited) %></td>
+          </tr>
         </tbody>
       </table>
-
     </div>
   </div>
 </div>

@@ -1,1 +1,5 @@
-<%= link_to 'Login', login_path %>
+<% if logged_in? %>
+  <%= link_to 'User', user_funds_path(current_user.id) %>
+<% else %>
+  <%= link_to 'Login', login_path %>
+<% end %>
