@@ -1,92 +1,61 @@
 class FundsController < ApplicationController
   def index
+    @user_id = params[:user_id]
+
+    # Funds
     @funds = Fund.where(user_id: params[:user_id]).order('account DESC')
 
-    @sum_purchase = 0
+    # Summaries
+    @sum = Hash.new
+    @sum['買付金額'] = 0
+    @sum['評価金額'] = 0
     @funds.each do |fund|
-      @sum_purchase += fund.purchase
+      @sum['買付金額'] += fund.purchase
+      @sum['評価金額'] += fund.valuation
+    end
+    @sum['評価損益'] = @sum['評価金額'] - @sum['買付金額']
+
+    # Ratios
+    @assets = Hash.new { |h,k| h[k] = {} }
+    Category.all.each do |category|
+      @assets[category.name][:買付金額] = @funds.where(category: category.name).sum('purchase')
+      @assets[category.name][:評価金額] = @funds.where(category: category.name).sum('valuation')
+      @assets[category.name][:評価損益] = @assets[category.name][:評価金額] - @assets[category.name][:買付金額]
+      
+      purchase = @assets[category.name][:評価金額]
+      ratio = Ratio.where(user_id: params[:user_id], category: category.name)
+      @assets[category.name][:実際比率] = 0 < purchase ? (purchase.to_f / @sum['評価金額'].to_f * 100).round(3) : 0
+      @assets[category.name][:目標比率] = ratio.exists? ? ratio.first.value : 0
+      @assets[category.name][:比率差分] = (@assets[category.name][:実際比率] - @assets[category.name][:目標比率]).round(3)
     end
 
-    @sum_valuation = 0
-    @funds.each do |fund|
-      @sum_valuation += fund.valuation
-    end
-
-    @assets = Hash.new
-    @assets['国株'] = {
-      '買付金額': @funds.where(category: '国株').sum('purchase'),
-      '評価金額': @funds.where(category: '国株').sum('valuation')
-    }
-    @assets['国債'] = {
-      '買付金額': @funds.where(category: '国債').sum('purchase'),
-      '評価金額': @funds.where(category: '国債').sum('valuation')
-    }
-    @assets['国不'] = {
-      '買付金額': @funds.where(category: '国不').sum('purchase'),
-      '評価金額': @funds.where(category: '国不').sum('valuation')
-    }
-
-    @assets['先株'] = {
-      '買付金額': @funds.where(category: '先株').sum('purchase'),
-      '評価金額': @funds.where(category: '先株').sum('valuation')
-    }
-    @assets['先債'] = {
-      '買付金額': @funds.where(category: '先債').sum('purchase'),
-      '評価金額': @funds.where(category: '先債').sum('valuation')
-    }
-    @assets['先不'] = {
-      '買付金額': @funds.where(category: '先不').sum('purchase'),
-      '評価金額': @funds.where(category: '先不').sum('valuation')
-    }
-
-    @assets['新株'] = {
-      '買付金額': @funds.where(category: '新株').sum('purchase'),
-      '評価金額': @funds.where(category: '新株').sum('valuation')
-    }
-    @assets['新債'] = {
-      '買付金額': @funds.where(category: '新債').sum('purchase'),
-      '評価金額': @funds.where(category: '新債').sum('valuation')
-    }
-    @assets['新不'] = {
-      '買付金額': @funds.where(category: '新不').sum('purchase'),
-      '評価金額': @funds.where(category: '新不').sum('valuation')
-    }
-
-    @assets['他'] = {
-      '買付金額': @funds.where(category: '他').sum('purchase'),
-      '評価金額': @funds.where(category: '他').sum('valuation')
-    }
   end
   
-  def new
-  end
-
   def import
     # Import
-    funds = []
+    funds = Array.new
     CSV.foreach(params[:file].path, headers: true, encoding: 'Shift_JIS:UTF-8') do |row|
       funds << Fund.new(name: row['ファンド名'],
-                            category: nil,
-                            account: row['口座種別'],
-                            purchase: row['買付金額'],
-                            valuation: row['評価金額'],
-                            user_id: params[:user_id])
+                        category: nil,
+                        account: row['口座種別'],
+                        purchase: row['買付金額'],
+                        valuation: row['評価金額'],
+                        user_id: params[:user_id])
     end
+    # Copy category from current to new if exists fund
     funds.each do |row|
-      if Fund.where(user_id: params[:user_id])
-             .where(name: row.name)
-             .where(account: row.account)
-             .where.not(category: nil).count > 0
-        row.category = Fund.where(user_id: params[:user_id])
-                           .where(name: row.name)
-                           .where(account: row.account)
-                           .where.not(category: nil)[0].category
+      fund = Fund.where(user_id: params[:user_id])
+                 .where(name: row.name)
+                 .where(account: row.account)
+                 .where.not(category: nil)
+      if fund.count > 0
+        row.category = Fund.fund.first.category
       end
     end
+    # Delete current user's all columns
     Fund.where(user_id: params[:user_id]).destroy_all
     Fund.import(funds)
 
-    # Return
     @funds = Fund.where(user_id: params[:user_id]).order('account DESC')
     redirect_to user_funds_path
   end
@@ -94,7 +63,15 @@ class FundsController < ApplicationController
   def set_category
     fund = Fund.find(params[:id])
     fund.update(category: (params[:category] == '' ? nil : params[:category]))
-    render json: { status: 'success' }
+  end
+
+  def set_ratio
+    ratio = Ratio.where(user_id: params[:user_id], category: params[:category])
+    if ratio.count > 0
+      ratio.update(value: params[:value])
+    else
+      Ratio.create(user_id: params[:user_id], category: params[:category], value: params[:value])
+    end
   end
 
 end

@@ -10,7 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_24_193559) do
+ActiveRecord::Schema.define(version: 2019_09_28_152752) do
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "funds", force: :cascade do |t|
     t.string "name"
@@ -22,6 +28,15 @@ ActiveRecord::Schema.define(version: 2019_09_24_193559) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.index ["user_id"], name: "index_funds_on_user_id"
+  end
+
+  create_table "ratios", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "category"
+    t.float "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_ratios_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

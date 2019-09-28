@@ -9,4 +9,5 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 }
 
   has_many :funds, dependent: :destroy
+  has_many :ratios, dependent: :destroy
 end

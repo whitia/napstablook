@@ -47,32 +47,38 @@
                                              :onchange => 'set_category($(this));' %>
               </td>
               <td>
-                <input type="number" class="form-control form-control-sm text-right">
+                <%= number_field_tag 'increase', 0, class: 'form-control form-control-sm text-right',
+                                                 value: 0,
+                                                 data: { category_id: fund.id },
+                                                 :onchange => 'set_increase($(this));' %>
               </td>
             </tr>
           <% end %>
           <tr>
             <td></td>
             <td></td>
-            <td class="text-right"><%= @sum_purchase.to_s(:delimited) %></td>
-            <td class="text-right"><%= @sum_valuation.to_s(:delimited) %></td>
-            <td class="text-right<%= ' text-danger' if sub(@sum_valuation, @sum_purchase) < 0 %>"><%= sub(@sum_valuation, @sum_purchase).to_s(:delimited) %></td>
+            <td class="text-right"><%= @sum['買付金額'].to_s(:delimited) %></td>
+            <td class="text-right"><%= @sum['評価金額'].to_s(:delimited) %></td>
+            <td class="text-right<%= ' text-danger' if @sum['評価損益'] < 0 %>">
+              <%= @sum['評価損益'].to_s(:delimited) %>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div class="col-sm-8">
+    <div class="col-sm-12">
       <h4 class="my-3">資産比率</h4>
       <table class="table table-sm table-bordered small">
         <thead>
           <tr class="bg-info text-white">
-            <th width="5%" class="text-center">種別</th>
-            <th width="19%" class="text-center">買付金額</th>
-            <th width="19%" class="text-center">評価金額</th>
-            <th width="19%" class="text-center">実際比率</th>
-            <th width="19%" class="text-center">目標比率</th>
-            <th width="19%" class="text-center">比率差分</th>
+            <th width="10%" class="text-center">資産種別</th>
+            <th width="15%" class="text-center">買付金額</th>
+            <th width="15%" class="text-center">評価金額</th>
+            <th width="15%" class="text-center">評価損益</th>
+            <th width="15%" class="text-center">実際比率</th>
+            <th width="15%" class="text-center">目標比率</th>
+            <th width="15%" class="text-center">比率差分</th>
           </tr>
         </thead>
         <tbody>
@@ -81,15 +87,24 @@
               <td class="align-middle"><%= category %></td>
               <td class="align-middle text-right"><%= @assets[category][:買付金額].to_s(:delimited) %></td>
               <td class="align-middle text-right"><%= @assets[category][:評価金額].to_s(:delimited) %></td>
-              <td class="align-middle text-right">
-                <%= @assets[category][:評価金額] > 0 ? (@assets[category][:評価金額].to_f / @sum_valuation.to_f * 100.0).to_s(:percentage) : 0.to_s(:percentage) %>
+              <td class="align-middle text-right<%= ' text-danger' if @assets[category][:評価損益] < 0 %>">
+                <%= @assets[category][:評価損益].to_s(:delimited) %>
               </td>
+              <td class="align-middle text-right"><%= @assets[category][:実際比率] %>%</td>
               <td class="align-middle text-right">
-                <input type="number" min="0" max="100" value="0" class="form-control form-control-sm text-right">
+                <div class="input-group input-group-sm">
+                  <%= number_field_tag 'ratio', 0, class: 'form-control form-control-sm text-right',
+                                                   value: @assets[category][:目標比率],
+                                                   step: 0.1,
+                                                   data: { category: category },
+                                                   :onchange => 'set_ratio($(this));' %>
+                  <div class="input-group-append">
+                    <span class="input-group-text">%</span>
+                  </div>
+                </div>
               </td>
-              <% diff = 0 - (@assets[category][:評価金額].to_f / @sum_valuation.to_f) %>
-              <td class="align-middle text-right<%= ' text-danger' if diff < 0.0 %>">
-                <%= (diff * 100).to_s(:percentage) %>
+              <td class="align-middle text-right<%= ' text-danger' if @assets[category][:比率差分] < 0 %>">
+                <%= @assets[category][:比率差分] %>%
               </td>
             </tr>
           <% end %>
@@ -122,6 +137,25 @@
       dataType: 'json'
     })
     .done(function(data, stat, xhr) {
+      location.reload();
+    })
+    .fail(function(xhr, stat, err) {
+      alert(err);
+    });
+  }
+  function set_ratio(input) {
+    $.ajax({
+      type: 'GET',
+      url: '/funds/set_ratio',
+      data: {
+        user_id: <%= @user_id %>,
+        category: input.data('category'),
+        value: input[0].value
+      },
+      dataType: 'json'
+    })
+    .done(function(data, stat, xhr) {
+      location.reload();
     })
     .fail(function(xhr, stat, err) {
       alert(err);
