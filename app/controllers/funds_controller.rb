@@ -11,6 +11,51 @@ class FundsController < ApplicationController
     @funds.each do |fund|
       @sum_valuation += fund.valuation
     end
+
+    @assets = Hash.new
+    @assets['国株'] = {
+      '買付金額': @funds.where(category: '国株').sum('purchase'),
+      '評価金額': @funds.where(category: '国株').sum('valuation')
+    }
+    @assets['国債'] = {
+      '買付金額': @funds.where(category: '国債').sum('purchase'),
+      '評価金額': @funds.where(category: '国債').sum('valuation')
+    }
+    @assets['国不'] = {
+      '買付金額': @funds.where(category: '国不').sum('purchase'),
+      '評価金額': @funds.where(category: '国不').sum('valuation')
+    }
+
+    @assets['先株'] = {
+      '買付金額': @funds.where(category: '先株').sum('purchase'),
+      '評価金額': @funds.where(category: '先株').sum('valuation')
+    }
+    @assets['先債'] = {
+      '買付金額': @funds.where(category: '先債').sum('purchase'),
+      '評価金額': @funds.where(category: '先債').sum('valuation')
+    }
+    @assets['先不'] = {
+      '買付金額': @funds.where(category: '先不').sum('purchase'),
+      '評価金額': @funds.where(category: '先不').sum('valuation')
+    }
+
+    @assets['新株'] = {
+      '買付金額': @funds.where(category: '新株').sum('purchase'),
+      '評価金額': @funds.where(category: '新株').sum('valuation')
+    }
+    @assets['新債'] = {
+      '買付金額': @funds.where(category: '新債').sum('purchase'),
+      '評価金額': @funds.where(category: '新債').sum('valuation')
+    }
+    @assets['新不'] = {
+      '買付金額': @funds.where(category: '新不').sum('purchase'),
+      '評価金額': @funds.where(category: '新不').sum('valuation')
+    }
+
+    @assets['他'] = {
+      '買付金額': @funds.where(category: '他').sum('purchase'),
+      '評価金額': @funds.where(category: '他').sum('valuation')
+    }
   end
   
   def new
@@ -51,15 +96,5 @@ class FundsController < ApplicationController
     fund.update(category: (params[:category] == '' ? nil : params[:category]))
     render json: { status: 'success' }
   end
-
-  private
-    def is_exists(funds_org, funds_new)
-      org.foreach do |row|
-        if row.name == funds_new['ファンド名'] && row.account == funds_new['口座種別']
-          return true
-        end
-      end
-      return false
-    end
 
 end
