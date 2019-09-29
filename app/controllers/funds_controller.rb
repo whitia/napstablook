@@ -19,11 +19,12 @@ class FundsController < ApplicationController
     @assets = Hash.new { |h,k| h[k] = {} }
     Category.all.each do |category|
       @assets[category.name][:買付金額] = @funds.where(category: category.name).sum('purchase')
-      @assets[category.name][:評価金額] = @funds.where(category: category.name).sum('valuation')
+      @assets[category.name][:評価金額] = @funds.where(category: category.name).sum('valuation') + \
+                                         @funds.where(category: category.name).sum('increase')
       
-      purchase = @assets[category.name][:評価金額]
+      valuation = @assets[category.name][:評価金額]
       ratio = Ratio.where(user_id: params[:user_id], category: category.name)
-      @assets[category.name][:実際比率] = 0 < purchase ? (purchase.to_f / @sum['評価金額'].to_f * 100).round(3) : 0
+      @assets[category.name][:実際比率] = 0 < valuation ? (valuation.to_f / @sum['評価金額'].to_f * 100).round(3) : 0
       @assets[category.name][:目標比率] = ratio.exists? ? ratio.first.value : 0.0
       @assets[category.name][:比率差分] = (@assets[category.name][:実際比率] - @assets[category.name][:目標比率]).round(3)
     end
@@ -35,11 +36,12 @@ class FundsController < ApplicationController
     funds = Array.new
     CSV.foreach(params[:file].path, headers: true, encoding: 'Shift_JIS:UTF-8') do |row|
       funds << Fund.new(name: row['ファンド名'],
-                        category: nil,
                         account: row['口座種別'],
                         purchase: row['買付金額'],
                         valuation: row['評価金額'],
                         difference: row['評価金額'].to_i - row['買付金額'].to_i,
+                        category: nil,
+                        increase: 0,
                         user_id: params[:user_id])
     end
     # Update new category to current it if exists fund
@@ -62,7 +64,18 @@ class FundsController < ApplicationController
 
   def set_category
     fund = Fund.find(params[:id])
-    fund.update(category: (params[:category] == '' ? nil : params[:category]))
+    before_category = fund.category
+    after_category  = params[:category]
+    fund.update(category: (after_category.present? ? after_category : nil))
+
+    render json: get_ratios(fund, before_category, after_category)
+  end
+
+  def set_increase
+    fund = Fund.find(params[:id])
+    fund.update(increase: params[:increase])
+
+    render json: get_ratios(fund, fund.category, fund.category)
   end
 
   def set_ratio
@@ -74,5 +87,44 @@ class FundsController < ApplicationController
     end
     render json: { category: params[:category], value: params[:value] }
   end
+
+  private
+    def get_ratios(fund, before_category, after_category)
+      # Purchases
+      before_purchase = Fund.where(user_id: fund.user_id, category: before_category).sum('purchase')
+      after_purchase  = Fund.where(user_id: fund.user_id, category: after_category).sum('purchase')
+  
+      # Valuations
+      before_valuation = Fund.where(user_id: fund.user_id, category: before_category).sum('valuation') + \
+                         Fund.where(user_id: fund.user_id, category: before_category).sum('increase')
+      after_valuation  = Fund.where(user_id: fund.user_id, category: after_category).sum('valuation') + \
+                         Fund.where(user_id: fund.user_id, category: after_category).sum('increase')
+      
+      # Real ratios
+      sum_valuation = Fund.where(user_id: fund.user_id).sum('valuation')
+      before_real = 0 < before_valuation ? (before_valuation.to_f / sum_valuation.to_f * 100).round(3) : 0
+      after_real  = 0 < after_valuation ? (after_valuation.to_f / sum_valuation.to_f * 100).round(3) : 0
+  
+      # Ideal ratios
+      before_ideal = Ratio.where(user_id: fund.user_id, category: before_category).first.value
+      after_ideal  = Ratio.where(user_id: fund.user_id, category: after_category).first.value
+      
+      return {
+        before: {
+          category: before_category,
+          purchase: before_purchase.to_s(:delimited),
+          valuation: before_valuation.to_s(:delimited),
+          real: before_real,
+          diff: (before_real - before_ideal).round(3)
+        },
+        after: {
+          category: after_category,
+          purchase: after_purchase.to_s(:delimited),
+          valuation: after_valuation.to_s(:delimited),
+          real: after_real,
+          diff: (after_real - after_ideal).round(3)
+        }
+      }
+    end
 
 end

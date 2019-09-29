@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   end
   get '/funds/set_category', to: 'funds#set_category'
   get '/funds/set_ratio', to: 'funds#set_ratio'
+  get '/funds/set_increase', to: 'funds#set_increase'
 end

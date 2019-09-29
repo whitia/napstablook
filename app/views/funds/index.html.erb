@@ -21,10 +21,10 @@
         <thead>
           <tr class="bg-info text-white">
             <th width="8%" class="text-center">口座種別</th>
-            <th width="50%" class="text-center">銘柄名</th>
-            <th width="7%" class="text-center">買付金額</th>
-            <th width="7%" class="text-center">評価金額</th>
-            <th width="7%" class="text-center">評価損益</th>
+            <th width="47%" class="text-center">銘柄名</th>
+            <th width="8%" class="text-center">買付金額</th>
+            <th width="8%" class="text-center">評価金額</th>
+            <th width="8%" class="text-center">評価損益</th>
             <th width="9%" class="text-center">資産種別</th>
             <th width="12%" class="text-center">増資金額</th>
           </tr>
@@ -48,7 +48,7 @@
               </td>
               <td class="align-middle">
                 <%= number_field_tag 'increase', 0, class: 'form-control form-control-sm text-right',
-                                                    value: 0,
+                                                    value: fund.increase,
                                                     data: { category_id: fund.id },
                                                     onchange: 'set_increase($(this));' %>
               </td>
@@ -133,17 +133,61 @@
   }
 
   function set_category(selected) {
+    var category = selected[0].selectedOptions[0].value;
     $.ajax({
       type: 'GET',
       url: '/funds/set_category',
       data: {
         id: selected.data('category-id'),
-        category: selected[0].selectedOptions[0].value
+        category: category
       },
       dataType: 'json'
     })
     .done(function(data, stat, xhr) {
-      location.reload();
+      $('#買付金額_' + data.before.category).text(data.before.purchase);
+      $('#評価金額_' + data.before.category).text(data.before.valuation);
+      $('#実際比率_' + data.before.category).text(data.before.real + ' ');
+      $('#比率差分_' + data.before.category).text(data.before.diff + ' ');
+      if (data.before.diff < 0) {
+        $('#比率差分_' + data.before.category).addClass('text-danger');
+      } else {
+        $('#比率差分_' + data.before.category).removeClass('text-danger');
+      }
+
+      $('#買付金額_' + data.after.category).text(data.after.purchase);
+      $('#評価金額_' + data.after.category).text(data.after.valuation);
+      $('#実際比率_' + data.after.category).text(data.after.real + ' ');
+      $('#比率差分_' + data.after.category).text(data.after.diff + ' ');
+      if (data.after.diff < 0) {
+        $('#比率差分_' + data.after.category).addClass('text-danger');
+      } else {
+        $('#比率差分_' + data.after.category).removeClass('text-danger');
+      }
+    })
+    .fail(function(xhr, stat, err) {
+      alert(err);
+    });
+  }
+
+  function set_increase(input) {
+    $.ajax({
+      type: 'GET',
+      url: '/funds/set_increase',
+      data: {
+        id: input.data('category-id'),
+        increase: input.val()
+      },
+      dataType: 'json'
+    })
+    .done(function(data, stat, xhr) {
+      $('#評価金額_' + data.before.category).text(data.before.valuation);
+      $('#実際比率_' + data.before.category).text(data.before.real + ' ');
+      $('#比率差分_' + data.before.category).text(data.before.diff + ' ');
+      if (data.before.diff < 0) {
+        $('#比率差分_' + data.before.category).addClass('text-danger');
+      } else {
+        $('#比率差分_' + data.before.category).removeClass('text-danger');
+      }
     })
     .fail(function(xhr, stat, err) {
       alert(err);
@@ -170,24 +214,6 @@
       } else {
         $('#比率差分_' + data.category).removeClass('text-danger');
       }
-    })
-    .fail(function(xhr, stat, err) {
-      alert(err);
-    });
-  }
-
-  function set_increase(input) {
-    $.ajax({
-      type: 'GET',
-      url: '/funds/set_increase',
-      data: {
-        id: selected.data('category-id'),
-        category: selected[0].selectedOptions[0].value
-      },
-      dataType: 'json'
-    })
-    .done(function(data, stat, xhr) {
-      location.reload();
     })
     .fail(function(xhr, stat, err) {
       alert(err);
