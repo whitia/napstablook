@@ -2,6 +2,7 @@
   <div class="row">
     <div class="col-sm-12">
       <h4 class="my-3">インポート</h4>
+      <div class="small mb-1">手順1：資産一覧(CSV形式)をインポートします。</div>
       <%= form_with url: import_user_funds_path, local: true, multipart: true do |form| %>
         <div class="input-group">
           <%= text_field_tag 'file_name', '', class: 'form-control border-info',
@@ -15,100 +16,104 @@
       <% end %>
     </div>
 
-    <div class="col-sm-8 pr-1">
-      <h4 class="my-3">資産一覧</h4>
-      <table class="table table-sm table-bordered small">
-        <thead>
-          <tr class="bg-info text-white">
-            <th width="8%" class="text-center">口座種別</th>
-            <th width="47%" class="text-center">銘柄名</th>
-            <th width="8%" class="text-center">買付金額</th>
-            <th width="8%" class="text-center">評価金額</th>
-            <th width="8%" class="text-center">評価損益</th>
-            <th width="9%" class="text-center">資産種別</th>
-            <th width="12%" class="text-center">増資金額</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @funds.each do |fund| %>
+    <% if @funds.present? %>
+      <div class="col-sm-8 pr-1">
+        <h4 class="my-3">資産一覧</h4>
+        <div class="small mb-1">手順2：資産種別を選択します。</div>
+        <table class="table table-sm table-bordered small">
+          <thead>
+            <tr class="bg-info text-white">
+              <th width="8%" class="text-center">口座種別</th>
+              <th width="47%" class="text-center">銘柄名</th>
+              <th width="8%" class="text-center">買付金額</th>
+              <th width="8%" class="text-center">評価金額</th>
+              <th width="8%" class="text-center">評価損益</th>
+              <th width="9%" class="text-center">資産種別</th>
+              <th width="12%" class="text-center">増資金額</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @funds.each do |fund| %>
+              <tr>
+                <td class="align-middle"><%= fund.account %></td>
+                <td class="align-middle"><%= fund.name %></td>
+                <td class="align-middle text-right"><%= fund.purchase.to_s(:delimited) %></td>
+                <td class="align-middle text-right"><%= fund.valuation.to_s(:delimited) %></td>
+                <td class="align-middle text-right<%= ' text-danger' if fund.difference < 0 %>">
+                  <%= fund.difference.to_s(:delimited) %>
+                </td>
+                <td class="align-middle">
+                  <%= select_tag 'categories', options_for_select(@assets.keys, { :selected => fund.category }),
+                                               include_blank: true,
+                                               class: 'custom-select custom-select-sm',
+                                               data: { category_id: fund.id },
+                                               onchange: 'set_category($(this));' %>
+                </td>
+                <td class="align-middle">
+                  <%= number_field_tag 'increase', 0, class: 'form-control form-control-sm text-right',
+                                                      value: fund.increase,
+                                                      data: { category_id: fund.id },
+                                                      onchange: 'set_increase($(this));' %>
+                </td>
+              </tr>
+            <% end %>
             <tr>
-              <td class="align-middle"><%= fund.account %></td>
-              <td class="align-middle"><%= fund.name %></td>
-              <td class="align-middle text-right"><%= fund.purchase.to_s(:delimited) %></td>
-              <td class="align-middle text-right"><%= fund.valuation.to_s(:delimited) %></td>
-              <td class="align-middle text-right<%= ' text-danger' if fund.difference < 0 %>">
-                <%= fund.difference.to_s(:delimited) %>
-              </td>
-              <td class="align-middle">
-                <%= select_tag 'categories', options_for_select(@assets.keys, { :selected => fund.category }),
-                                             include_blank: true,
-                                             class: 'custom-select custom-select-sm',
-                                             data: { category_id: fund.id },
-                                             onchange: 'set_category($(this));' %>
-              </td>
-              <td class="align-middle">
-                <%= number_field_tag 'increase', 0, class: 'form-control form-control-sm text-right',
-                                                    value: fund.increase,
-                                                    data: { category_id: fund.id },
-                                                    onchange: 'set_increase($(this));' %>
+              <td></td>
+              <td></td>
+              <td class="text-right"><%= @sum['買付金額'].to_s(:delimited) %></td>
+              <td class="text-right"><%= @sum['評価金額'].to_s(:delimited) %></td>
+              <td class="text-right<%= ' text-danger' if @sum['評価損益'] < 0 %>">
+                <%= @sum['評価損益'].to_s(:delimited) %>
               </td>
             </tr>
-          <% end %>
-          <tr>
-            <td></td>
-            <td></td>
-            <td class="text-right"><%= @sum['買付金額'].to_s(:delimited) %></td>
-            <td class="text-right"><%= @sum['評価金額'].to_s(:delimited) %></td>
-            <td class="text-right<%= ' text-danger' if @sum['評価損益'] < 0 %>">
-              <%= @sum['評価損益'].to_s(:delimited) %>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="col-sm-4 pl-1">
-      <h4 class="my-3">資産比率</h4>
-      <table class="table table-sm table-bordered small">
-        <thead>
-          <tr class="bg-info text-white">
-            <th width="8%" class="text-center">種別</th>
-            <th width="15%" class="text-center">買付金額</th>
-            <th width="15%" class="text-center">評価金額</th>
-            <th width="15%" class="text-center">実際比率</th>
-            <th width="17%" class="text-center">目標比率</th>
-            <th width="15%" class="text-center">比率差分</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @assets.keys.each do |category| %>
-            <tr>
-              <td class="align-middle"><%= category %></td>
-              <td class="align-middle text-right" id="買付金額_<%= category %>">
-                <%= @assets[category][:買付金額].to_s(:delimited) %>
-              </td>
-              <td class="align-middle text-right" id="評価金額_<%= category %>">
-                <%= @assets[category][:評価金額].to_s(:delimited) %>
-              </td>
-              <td class="align-middle text-right percent" id="実際比率_<%= category %>">
-                <%= @assets[category][:実際比率] %>
-              </td>
-              <td class="align-middle text-right">
-                <%= number_field_tag 'ratio', 0, class: 'form-control form-control-sm text-right',
-                                                 id: '目標比率_' + category,
-                                                 value: @assets[category][:目標比率],
-                                                 step: 0.1,
-                                                 data: { category: category },
-                                                 onchange: 'set_ratio($(this));' %>
-              </td>
-              <td class="align-middle text-right percent<%= ' text-danger' if @assets[category][:比率差分] < 0 %>" id="比率差分_<%= category %>">
-                <%= @assets[category][:比率差分] %>
-              </td>
+          </tbody>
+        </table>
+      </div>
+  
+      <div class="col-sm-4 pl-1">
+        <h4 class="my-3">資産比率</h4>
+        <div class="small mb-1">手順3：目標比率を入力します。</div>
+        <table class="table table-sm table-bordered small">
+          <thead>
+            <tr class="bg-info text-white">
+              <th width="8%" class="text-center">種別</th>
+              <th width="15%" class="text-center">買付金額</th>
+              <th width="15%" class="text-center">評価金額</th>
+              <th width="15%" class="text-center">実際比率</th>
+              <th width="17%" class="text-center">目標比率</th>
+              <th width="15%" class="text-center">比率差分</th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            <% @assets.keys.each do |category| %>
+              <tr>
+                <td class="align-middle"><%= category %></td>
+                <td class="align-middle text-right" id="買付金額_<%= category %>">
+                  <%= @assets[category][:買付金額].to_s(:delimited) %>
+                </td>
+                <td class="align-middle text-right" id="評価金額_<%= category %>">
+                  <%= @assets[category][:評価金額].to_s(:delimited) %>
+                </td>
+                <td class="align-middle text-right percent" id="実際比率_<%= category %>">
+                  <%= @assets[category][:実際比率] %>
+                </td>
+                <td class="align-middle text-right">
+                  <%= number_field_tag 'ratio', 0, class: 'form-control form-control-sm text-right',
+                                                   id: '目標比率_' + category,
+                                                   value: @assets[category][:目標比率],
+                                                   step: 0.1,
+                                                   data: { category: category },
+                                                   onchange: 'set_ratio($(this));' %>
+                </td>
+                <td class="align-middle text-right percent<%= ' text-danger' if @assets[category][:比率差分] < 0 %>" id="比率差分_<%= category %>">
+                  <%= @assets[category][:比率差分] %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
 
   </div>
 </div>
@@ -136,7 +141,7 @@
     var category = selected[0].selectedOptions[0].value;
     $.ajax({
       type: 'GET',
-      url: '/funds/set_category',
+      url: '<%= set_category_user_funds_path %>',
       data: {
         id: selected.data('category-id'),
         category: category
@@ -172,7 +177,7 @@
   function set_increase(input) {
     $.ajax({
       type: 'GET',
-      url: '/funds/set_increase',
+      url: '<%= set_increase_user_funds_path %>',
       data: {
         id: input.data('category-id'),
         increase: input.val()
@@ -197,9 +202,8 @@
   function set_ratio(input) {
     $.ajax({
       type: 'GET',
-      url: '/funds/set_ratio',
+      url: '<%= set_ratio_user_funds_path %>',
       data: {
-        user_id: <%= @user_id %>,
         category: input.data('category'),
         value: input[0].value
       },

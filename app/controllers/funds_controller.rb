@@ -1,7 +1,5 @@
 class FundsController < ApplicationController
   def index
-    @user_id = params[:user_id]
-
     # Funds
     @funds = Fund.where(user_id: params[:user_id]).order('account DESC')
 
@@ -80,7 +78,7 @@ class FundsController < ApplicationController
 
   def set_ratio
     ratio = Ratio.where(user_id: params[:user_id], category: params[:category])
-    if ratio.count > 0
+    if ratio.exists?
       ratio.update(value: params[:value])
     else
       Ratio.create(user_id: params[:user_id], category: params[:category], value: params[:value])
@@ -106,8 +104,10 @@ class FundsController < ApplicationController
       after_real  = 0 < after_valuation ? (after_valuation.to_f / sum_valuation.to_f * 100).round(3) : 0
   
       # Ideal ratios
-      before_ideal = Ratio.where(user_id: fund.user_id, category: before_category).first.value
-      after_ideal  = Ratio.where(user_id: fund.user_id, category: after_category).first.value
+      before_ratio = Ratio.where(user_id: fund.user_id, category: before_category)
+      after_ratio  = Ratio.where(user_id: fund.user_id, category: after_category)
+      before_ideal = before_ratio.exists? ? before_ratio.first.value : 0
+      after_ideal  = after_ratio.exists? ? after_ratio.first.value : 0
       
       return {
         before: {
