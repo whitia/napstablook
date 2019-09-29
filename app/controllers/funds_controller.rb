@@ -1,6 +1,7 @@
 class FundsController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def index
-    # Funds
     @funds = Fund.where(user_id: params[:user_id]).order('account DESC')
 
     # Summaries
@@ -27,6 +28,16 @@ class FundsController < ApplicationController
       @assets[category.name][:比率差分] = (@assets[category.name][:実際比率] - @assets[category.name][:目標比率]).round(3)
     end
 
+    # Pie datas
+    @real = Hash.new
+    Category.all.each do |category|
+      @real[category.name] = @assets[category.name][:実際比率]
+    end
+
+    @ideal = Hash.new
+    Category.all.each do |category|
+      @ideal[category.name] = @assets[category.name][:目標比率]
+    end
   end
   
   def import
@@ -83,7 +94,10 @@ class FundsController < ApplicationController
     else
       Ratio.create(user_id: params[:user_id], category: params[:category], value: params[:value])
     end
-    render json: { category: params[:category], value: params[:value] }
+    render json: {
+      category: params[:category],
+      value: params[:value]
+    }
   end
 
   private

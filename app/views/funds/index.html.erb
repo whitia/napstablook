@@ -113,6 +113,24 @@
           </tbody>
         </table>
       </div>
+
+      <div class="col-sm-6">
+        <h4 class="my-3">実際比率</h4>
+        <% colors = ['#c93a40', '#fff001', '#d06d8c', '#65ace4', '#a0c238', '#56a764', '#d16b16', '#cc528b', '#9460a0', '#0074bf'] %>
+        <%= pie_chart @real, id: 'real-ratio',
+                             width: '100%',
+                             height: '400px',
+                             colors: colors,
+                             suffix: '%', legend: 'left' %>
+      </div>
+      <div class="col-sm-6">
+        <h4 class="my-3">目標比率</h4>
+        <%= pie_chart @ideal, id: 'ideal-ratio',
+                              width: '100%',
+                              height: '400px',
+                              colors: colors,
+                              suffix: '%', legend: 'left' %>
+      </div>
     <% end %>
 
   </div>
@@ -140,7 +158,7 @@
   function set_category(selected) {
     var category = selected[0].selectedOptions[0].value;
     $.ajax({
-      type: 'GET',
+      type: 'POST',
       url: '<%= set_category_user_funds_path %>',
       data: {
         id: selected.data('category-id'),
@@ -176,7 +194,7 @@
 
   function set_increase(input) {
     $.ajax({
-      type: 'GET',
+      type: 'POST',
       url: '<%= set_increase_user_funds_path %>',
       data: {
         id: input.data('category-id'),
@@ -201,7 +219,7 @@
 
   function set_ratio(input) {
     $.ajax({
-      type: 'GET',
+      type: 'POST',
       url: '<%= set_ratio_user_funds_path %>',
       data: {
         category: input.data('category'),

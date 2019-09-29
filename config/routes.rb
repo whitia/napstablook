@@ -6,9 +6,9 @@ Rails.application.routes.draw do
   resources :users do
     resources :funds do
       collection { post :import }
-      collection { get :set_category }
-      collection { get :set_increase }
-      collection { get :set_ratio }
+      collection { post :set_category }
+      collection { post :set_increase }
+      collection { post :set_ratio }
     end
   end
 end
