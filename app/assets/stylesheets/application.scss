@@ -13,11 +13,18 @@
  *= require_tree .
  *= require_self
  */
- @import "bootstrap";
+
+$input-bg: #ffffdd;
+
+@import "bootstrap";
 
 td:empty {
   visibility: hidden;
 }
 td:blank {
   visibility: hidden;
+}
+
+.percent::after {
+  content: "%";
 }

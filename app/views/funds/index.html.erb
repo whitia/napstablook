@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-sm-12">
       <h4 class="my-3">インポート</h4>
-      <%= form_with url: import_user_funds_path, multipart: true do |form| %>
+      <%= form_with url: import_user_funds_path, local: true, multipart: true do |form| %>
         <div class="input-group">
           <%= text_field_tag 'file_name', '', class: 'form-control border-info',
                                               onclick: '$("#file").click();',
@@ -15,18 +15,18 @@
       <% end %>
     </div>
 
-    <div class="col-sm-12">
+    <div class="col-sm-8 pr-1">
       <h4 class="my-3">資産一覧</h4>
       <table class="table table-sm table-bordered small">
         <thead>
           <tr class="bg-info text-white">
-            <th width="10%" class="text-center">口座種別</th>
-            <th width="45%" class="text-center">銘柄名</th>
-            <th width="8%" class="text-center">買付金額</th>
-            <th width="8%" class="text-center">評価金額</th>
-            <th width="8%" class="text-center">評価損益</th>
-            <th width="6%" class="text-center">資産種別</th>
-            <th width="15%" class="text-center">増資金額</th>
+            <th width="8%" class="text-center">口座種別</th>
+            <th width="50%" class="text-center">銘柄名</th>
+            <th width="7%" class="text-center">買付金額</th>
+            <th width="7%" class="text-center">評価金額</th>
+            <th width="7%" class="text-center">評価損益</th>
+            <th width="9%" class="text-center">資産種別</th>
+            <th width="12%" class="text-center">増資金額</th>
           </tr>
         </thead>
         <tbody>
@@ -36,21 +36,21 @@
               <td class="align-middle"><%= fund.name %></td>
               <td class="align-middle text-right"><%= fund.purchase.to_s(:delimited) %></td>
               <td class="align-middle text-right"><%= fund.valuation.to_s(:delimited) %></td>
-              <td class="align-middle text-right<%= ' text-danger' if sub(fund.valuation, fund.purchase) < 0 %>">
-                <%= sub(fund.valuation, fund.purchase).to_s(:delimited) %>
+              <td class="align-middle text-right<%= ' text-danger' if fund.difference < 0 %>">
+                <%= fund.difference.to_s(:delimited) %>
               </td>
-              <td>
+              <td class="align-middle">
                 <%= select_tag 'categories', options_for_select(@assets.keys, { :selected => fund.category }),
                                              include_blank: true,
                                              class: 'custom-select custom-select-sm',
                                              data: { category_id: fund.id },
-                                             :onchange => 'set_category($(this));' %>
+                                             onchange: 'set_category($(this));' %>
               </td>
-              <td>
+              <td class="align-middle">
                 <%= number_field_tag 'increase', 0, class: 'form-control form-control-sm text-right',
-                                                 value: 0,
-                                                 data: { category_id: fund.id },
-                                                 :onchange => 'set_increase($(this));' %>
+                                                    value: 0,
+                                                    data: { category_id: fund.id },
+                                                    onchange: 'set_increase($(this));' %>
               </td>
             </tr>
           <% end %>
@@ -67,17 +67,16 @@
       </table>
     </div>
 
-    <div class="col-sm-12">
+    <div class="col-sm-4 pl-1">
       <h4 class="my-3">資産比率</h4>
       <table class="table table-sm table-bordered small">
         <thead>
           <tr class="bg-info text-white">
-            <th width="10%" class="text-center">資産種別</th>
+            <th width="8%" class="text-center">種別</th>
             <th width="15%" class="text-center">買付金額</th>
             <th width="15%" class="text-center">評価金額</th>
-            <th width="15%" class="text-center">評価損益</th>
             <th width="15%" class="text-center">実際比率</th>
-            <th width="15%" class="text-center">目標比率</th>
+            <th width="17%" class="text-center">目標比率</th>
             <th width="15%" class="text-center">比率差分</th>
           </tr>
         </thead>
@@ -85,26 +84,25 @@
           <% @assets.keys.each do |category| %>
             <tr>
               <td class="align-middle"><%= category %></td>
-              <td class="align-middle text-right"><%= @assets[category][:買付金額].to_s(:delimited) %></td>
-              <td class="align-middle text-right"><%= @assets[category][:評価金額].to_s(:delimited) %></td>
-              <td class="align-middle text-right<%= ' text-danger' if @assets[category][:評価損益] < 0 %>">
-                <%= @assets[category][:評価損益].to_s(:delimited) %>
+              <td class="align-middle text-right" id="買付金額_<%= category %>">
+                <%= @assets[category][:買付金額].to_s(:delimited) %>
               </td>
-              <td class="align-middle text-right"><%= @assets[category][:実際比率] %>%</td>
+              <td class="align-middle text-right" id="評価金額_<%= category %>">
+                <%= @assets[category][:評価金額].to_s(:delimited) %>
+              </td>
+              <td class="align-middle text-right percent" id="実際比率_<%= category %>">
+                <%= @assets[category][:実際比率] %>
+              </td>
               <td class="align-middle text-right">
-                <div class="input-group input-group-sm">
-                  <%= number_field_tag 'ratio', 0, class: 'form-control form-control-sm text-right',
-                                                   value: @assets[category][:目標比率],
-                                                   step: 0.1,
-                                                   data: { category: category },
-                                                   :onchange => 'set_ratio($(this));' %>
-                  <div class="input-group-append">
-                    <span class="input-group-text">%</span>
-                  </div>
-                </div>
+                <%= number_field_tag 'ratio', 0, class: 'form-control form-control-sm text-right',
+                                                 id: '目標比率_' + category,
+                                                 value: @assets[category][:目標比率],
+                                                 step: 0.1,
+                                                 data: { category: category },
+                                                 onchange: 'set_ratio($(this));' %>
               </td>
-              <td class="align-middle text-right<%= ' text-danger' if @assets[category][:比率差分] < 0 %>">
-                <%= @assets[category][:比率差分] %>%
+              <td class="align-middle text-right percent<%= ' text-danger' if @assets[category][:比率差分] < 0 %>" id="比率差分_<%= category %>">
+                <%= @assets[category][:比率差分] %>
               </td>
             </tr>
           <% end %>
@@ -116,16 +114,24 @@
 </div>
 
 <script>
+  // $(function () {
+  //   $(document).ajaxSuccess(function(event, xhr, settings) {
+  //     xhr.responseJSON.category;
+  //   });
+  // });
+
   $('#submit').on('click', function() {
     if ($('#file_name').val() == '') {
       alert('ファイルを選択してください');
       $('#file_name').focus();
     }
   });
+
   function file_selected(file_field) {
     var file_name = $(file_field)[0].files[0].name;
     $('#file_name').val(file_name);
   }
+
   function set_category(selected) {
     $.ajax({
       type: 'GET',
@@ -143,6 +149,7 @@
       alert(err);
     });
   }
+
   function set_ratio(input) {
     $.ajax({
       type: 'GET',
@@ -155,10 +162,36 @@
       dataType: 'json'
     })
     .done(function(data, stat, xhr) {
+      diff = $('#実際比率_' + data.category).text().trim() - data.value;
+      $('#目標比率_' + data.category).val(parseInt(data.value).toFixed(1));
+      $('#比率差分_' + data.category).text(diff.toFixed(3) + ' ');
+      if (diff < 0) {
+        $('#比率差分_' + data.category).addClass('text-danger');
+      } else {
+        $('#比率差分_' + data.category).removeClass('text-danger');
+      }
+    })
+    .fail(function(xhr, stat, err) {
+      alert(err);
+    });
+  }
+
+  function set_increase(input) {
+    $.ajax({
+      type: 'GET',
+      url: '/funds/set_increase',
+      data: {
+        id: selected.data('category-id'),
+        category: selected[0].selectedOptions[0].value
+      },
+      dataType: 'json'
+    })
+    .done(function(data, stat, xhr) {
       location.reload();
     })
     .fail(function(xhr, stat, err) {
       alert(err);
     });
   }
+
 </script>

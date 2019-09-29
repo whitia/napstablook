@@ -20,12 +20,11 @@ class FundsController < ApplicationController
     Category.all.each do |category|
       @assets[category.name][:買付金額] = @funds.where(category: category.name).sum('purchase')
       @assets[category.name][:評価金額] = @funds.where(category: category.name).sum('valuation')
-      @assets[category.name][:評価損益] = @assets[category.name][:評価金額] - @assets[category.name][:買付金額]
       
       purchase = @assets[category.name][:評価金額]
       ratio = Ratio.where(user_id: params[:user_id], category: category.name)
       @assets[category.name][:実際比率] = 0 < purchase ? (purchase.to_f / @sum['評価金額'].to_f * 100).round(3) : 0
-      @assets[category.name][:目標比率] = ratio.exists? ? ratio.first.value : 0
+      @assets[category.name][:目標比率] = ratio.exists? ? ratio.first.value : 0.0
       @assets[category.name][:比率差分] = (@assets[category.name][:実際比率] - @assets[category.name][:目標比率]).round(3)
     end
 
@@ -40,16 +39,17 @@ class FundsController < ApplicationController
                         account: row['口座種別'],
                         purchase: row['買付金額'],
                         valuation: row['評価金額'],
+                        difference: row['評価金額'].to_i - row['買付金額'].to_i,
                         user_id: params[:user_id])
     end
-    # Copy category from current to new if exists fund
+    # Update new category to current it if exists fund
     funds.each do |row|
       fund = Fund.where(user_id: params[:user_id])
                  .where(name: row.name)
                  .where(account: row.account)
                  .where.not(category: nil)
-      if fund.count > 0
-        row.category = Fund.fund.first.category
+      if fund.exists?
+        row.category = fund.first.category
       end
     end
     # Delete current user's all columns
@@ -72,6 +72,7 @@ class FundsController < ApplicationController
     else
       Ratio.create(user_id: params[:user_id], category: params[:category], value: params[:value])
     end
+    render json: { category: params[:category], value: params[:value] }
   end
 
 end
