@@ -4,6 +4,14 @@ class FundsController < ApplicationController
   def index
     @funds = Fund.where(user_id: params[:user_id]).order('account DESC')
 
+    # Categories
+    @categories = Array.new
+    @colors = Array.new
+    Category.all.each do |category|
+      @categories << category.name
+      @colors << category.color
+    end
+
     # Summaries
     @sum = Hash.new
     @sum['買付金額'] = 0

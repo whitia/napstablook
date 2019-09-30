@@ -1,8 +1,8 @@
 <div class="container-fluid">
-  <div class="row">
+  <div class="row my-5">
     <div class="col-sm-12">
-      <h4 class="my-3">インポート</h4>
-      <div class="small mb-1">手順1：資産一覧(CSV形式)をインポートします。</div>
+      <h4 class="">インポート</h4>
+      <div class="small text-muted">手順1：資産一覧(CSV形式)をインポートします。</div>
       <%= form_with url: import_user_funds_path, local: true, multipart: true do |form| %>
         <div class="input-group">
           <%= text_field_tag 'file_name', '', class: 'form-control border-info',
@@ -15,20 +15,22 @@
         </div>
       <% end %>
     </div>
+  </div>
 
-    <% if @funds.present? %>
-      <div class="col-sm-8 pr-1">
-        <h4 class="my-3">資産一覧</h4>
-        <div class="small mb-1">手順2：資産種別を選択します。</div>
+  <% if @funds.present? %>
+    <div class="row my-5">
+      <div class="col-sm-12">
+        <h4 class="">資産一覧</h4>
+        <div class="small text-muted">手順2：資産種別を選択します。</div>
         <table class="table table-sm table-bordered small">
           <thead>
             <tr class="bg-info text-white">
-              <th width="8%" class="text-center">口座種別</th>
-              <th width="47%" class="text-center">銘柄名</th>
+              <th width="10%" class="text-center">口座種別</th>
+              <th width="48%" class="text-center">銘柄名</th>
               <th width="8%" class="text-center">買付金額</th>
               <th width="8%" class="text-center">評価金額</th>
               <th width="8%" class="text-center">評価損益</th>
-              <th width="9%" class="text-center">資産種別</th>
+              <th width="6%" class="text-center">資産種別</th>
               <th width="12%" class="text-center">増資金額</th>
             </tr>
           </thead>
@@ -43,7 +45,7 @@
                   <%= fund.difference.to_s(:delimited) %>
                 </td>
                 <td class="align-middle">
-                  <%= select_tag 'categories', options_for_select(@assets.keys, { :selected => fund.category }),
+                  <%= select_tag 'categories', options_for_select(@categories, { :selected => fund.category }),
                                                include_blank: true,
                                                class: 'custom-select custom-select-sm',
                                                data: { category_id: fund.id },
@@ -69,10 +71,12 @@
           </tbody>
         </table>
       </div>
+    </div>
   
-      <div class="col-sm-4 pl-1">
-        <h4 class="my-3">資産比率</h4>
-        <div class="small mb-1">手順3：目標比率を入力します。</div>
+    <div class="row my-5">
+      <div class="col-sm-4">
+        <h4 class="">資産比率</h4>
+        <div class="small text-muted">手順3：目標比率を入力します。</div>
         <table class="table table-sm table-bordered small">
           <thead>
             <tr class="bg-info text-white">
@@ -114,26 +118,26 @@
         </table>
       </div>
 
-      <div class="col-sm-6">
-        <h4 class="my-3">実際比率</h4>
-        <% colors = ['#c93a40', '#fff001', '#d06d8c', '#65ace4', '#a0c238', '#56a764', '#d16b16', '#cc528b', '#9460a0', '#0074bf'] %>
+      <div class="col-sm-4">
+        <h4 class="mb-5">実際比率</h4>
         <%= pie_chart @real, id: 'real-ratio',
                              width: '100%',
-                             height: '400px',
-                             colors: colors,
+                             height: '300px',
+                             colors: @colors,
                              suffix: '%', legend: 'left' %>
       </div>
-      <div class="col-sm-6">
-        <h4 class="my-3">目標比率</h4>
+      <div class="col-sm-4">
+        <h4 class="mb-5">目標比率</h4>
         <%= pie_chart @ideal, id: 'ideal-ratio',
                               width: '100%',
-                              height: '400px',
-                              colors: colors,
+                              height: '300px',
+                              colors: @colors,
                               suffix: '%', legend: 'left' %>
       </div>
-    <% end %>
 
-  </div>
+    </div>
+  <% end %>
+
 </div>
 
 <script>
