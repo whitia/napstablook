@@ -1,16 +1,16 @@
-<div class="container-fluid">
+<div class="container">
   <div class="row my-5">
     <div class="col-sm-12">
-      <h4 class="">インポート</h4>
-      <div class="small text-muted">手順1：資産一覧(CSV形式)をインポートします。</div>
+      <h4 class="">Import file</h4>
+      <div class="small mb-1">Step 1: Import CSV file for fund list from SBI SECURITIES Co.,Ltd.</div>
       <%= form_with url: import_user_funds_path, local: true, multipart: true do |form| %>
         <div class="input-group">
           <%= text_field_tag 'file_name', '', class: 'form-control border-info',
                                               onclick: '$("#file").click();',
-                                              :placeholder => 'ここをクリックしてファイルを選択してください' %>
+                                              :placeholder => 'Choose CSV file and click here.' %>
           <%= file_field_tag :file, style: 'display: none', onchange: 'file_selected($(this));' %>
           <div class="input-group-append">
-            <%= submit_tag 'インポート', id: 'submit', class: 'btn btn-info' %>
+            <%= submit_tag 'Import', id: 'submit', class: 'btn btn-info' %>
           </div>
         </div>
       <% end %>
@@ -20,18 +20,18 @@
   <% if @funds.present? %>
     <div class="row my-5">
       <div class="col-sm-12">
-        <h4 class="">資産一覧</h4>
-        <div class="small text-muted">手順2：資産種別を選択します。</div>
-        <table class="table table-sm table-bordered small">
+        <h4 class="">Investment list</h4>
+        <div class="small mb-1">Step 2: Choose an asset class from dropdown list.</div>
+        <table class="table table-sm table-bordereda small">
           <thead>
             <tr class="bg-info text-white">
-              <th width="10%" class="text-center">口座種別</th>
-              <th width="48%" class="text-center">銘柄名</th>
-              <th width="8%" class="text-center">買付金額</th>
-              <th width="8%" class="text-center">評価金額</th>
-              <th width="8%" class="text-center">評価損益</th>
-              <th width="6%" class="text-center">資産種別</th>
-              <th width="12%" class="text-center">増資金額</th>
+              <th width="7%" class="text-center">Account</th>
+              <th width="43%" class="text-center">Trading Name</th>
+              <th width="10%" class="text-center">Purchase</th>
+              <th width="10%" class="text-center">Valuation</th>
+              <th width="10%" class="text-center">Difference</th>
+              <th width="8%" class="text-center">Class</th>
+              <th width="12%" class="text-center">Increase</th>
             </tr>
           </thead>
           <tbody>

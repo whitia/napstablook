@@ -14,9 +14,60 @@
  *= require_self
  */
 
-$input-bg: #ffffdd;
+$base-color: #0f1257;
+
+$body-bg: $base-color;
+$body-color: #fff;
+
+$navbar-padding-y: .75rem;
+$navbar-brand-font-size: 32;
+
+$navbar-dark-color: #fff;
+$navbar-dark-hover-color: #fff;
+
+$dropdown-font-size: 12;
+$dropdown-bg: lighten($base-color, 10%);
+$dropdown-border-color: lighten($base-color, 5%);
+$dropdown-border-radius: 0;
+$dropdown-divider-bg: lighten($base-color, 5%);
+$dropdown-link-color: #fff;
+$dropdown-link-hover-color: #fff;
+$dropdown-link-hover-bg: lighten($base-color, 5%);
+$dropdown-link-active-color: #fff;
+$dropdown-link-active-bg: lighten($base-color, 5%);
+
+$modal-content-bg: $base-color;
+
+$input-color: #fff;
+$input-bg: darken($base-color, 5%);
+$input-border-color: darken($base-color, 10%);
 
 @import "bootstrap";
+
+.navbar {
+  background-color: rgba($body-bg, 0.8);
+  filter: drop-shadow(0 3px 3px rgba(0,0,0,0.3));
+  .navbar-brand {
+    font-weight: 100;
+  }
+}
+
+.jumbotron {
+  background-image: image-url("main.jpg");
+  background-size: cover;
+  background-position: center center;
+  .container {
+    color: #fff;
+    padding: 10rem 0;
+    h1 {
+      margin: 0;
+    }
+  }
+}
+
+.modal-body {
+  padding: 1rem 5rem 2rem 5rem;
+}
 
 td:empty {
   visibility: hidden;

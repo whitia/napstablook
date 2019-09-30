@@ -6,13 +6,14 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:email].downcase)
     if user && user.authenticate(params[:password])
       log_in user
-      redirect_to user
+      redirect_to user_funds_path(user)
     else
-      # エラーメッセージを作成する
-      render 'new'
+      render '/'
     end
   end
 
   def destroy
+    log_out if logged_in?
+    redirect_to root_path
   end
 end

@@ -1,5 +1,42 @@
-<% if logged_in? %>
-  <%= link_to 'User', user_funds_path(current_user.id) %>
-<% else %>
-  <%= link_to 'Login', login_path %>
-<% end %>
+<div class="jumbotron rounded-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-9 text-center">
+        <h1>Organization investment.</h1>
+        <div class="small mb-2">For SBI SECURITIES Co.,Ltd.</div>
+          <button type="button" class="btn btn-outline-light rounded-pill px-5"
+                                data-toggle="modal" data-target="#signup">
+            Sign up for free!
+          </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="signup" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sma modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h4 class="my-3">Sign up</h4>
+
+        <%= form_with model: @user, local: true do |form| %>
+          <%= render 'shared/error_messages' %>
+          <div class="form-group">
+            <%= form.text_field :name, class: 'form-control', :placeholder => 'Name' %>
+          </div>
+          <div class="form-group">
+            <%= form.email_field :email, class: 'form-control', :placeholder => 'Email' %>
+          </div>
+          <div class="form-group">
+            <%= form.password_field :password, class: 'form-control', :placeholder => 'Password' %>
+          </div>
+          <div class="form-group">
+            <%= form.password_field :password_confirmation, class: 'form-control', :placeholder => 'Confirmation' %>
+          </div>
+          <%= form.submit 'Sign up!', class: 'btn btn-outline-light rounded-pill float-right' %>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+</div>
