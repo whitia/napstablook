@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   def show
+    redirect_to root_path if !logged_in? || (current_user.id != params[:user_id].to_i)
     @user = User.find(params[:id])
   end
 
@@ -10,9 +11,10 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      redirect_to @user
+      log_in(@user)
+      redirect_to user_funds_path(@user)
     else
-      render 'new'
+      render root_path
     end
   end
 

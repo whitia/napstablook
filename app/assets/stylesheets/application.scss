@@ -14,50 +14,69 @@
  *= require_self
  */
 
-$base-color: #0f1257;
+$color: #abd;
+//$base: #0f1257;
+$base: #090b34;
+$base-light-5: lighten($base, 5%);
+$base-light-10: lighten($base, 10%);
+$base-light-15: lighten($base, 15%);
+$base-dark-5: darken($base, 5%);
+$base-dark-10: darken($base, 10%);
+$base-dark-15: darken($base, 15%);
 
-$body-bg: $base-color;
-$body-color: #fff;
+$light: $color;
+$body-bg: $base;
+$body-color: $color;
 
 $navbar-padding-y: .75rem;
 $navbar-brand-font-size: 32;
 
 $navbar-dark-color: #fff;
-$navbar-dark-hover-color: #fff;
+$navbar-dark-hover-color: darken($navbar-dark-color, 15%);
 
-$dropdown-font-size: 12;
-$dropdown-bg: lighten($base-color, 10%);
-$dropdown-border-color: lighten($base-color, 5%);
+$dropdown-font-size: 14;
+$dropdown-item-padding-y: .75rem;
+$dropdown-item-padding-x: 1.25rem;
+$dropdown-bg: $base-light-5;
+$dropdown-border-width: 0;
 $dropdown-border-radius: 0;
-$dropdown-divider-bg: lighten($base-color, 5%);
-$dropdown-link-color: #fff;
-$dropdown-link-hover-color: #fff;
-$dropdown-link-hover-bg: lighten($base-color, 5%);
-$dropdown-link-active-color: #fff;
-$dropdown-link-active-bg: lighten($base-color, 5%);
+$dropdown-divider-bg: $base-light-10;
+$dropdown-link-color: $color;
+$dropdown-link-hover-color: $color;
+$dropdown-link-hover-bg: $base-light-10;
+$dropdown-link-active-color: $color;
+$dropdown-link-active-bg: $base-light-10;
 
-$modal-content-bg: $base-color;
+$modal-content-bg: $base;
 
-$input-color: #fff;
-$input-bg: darken($base-color, 5%);
-$input-border-color: darken($base-color, 10%);
+$input-color: $color;
+$input-bg: $base-light-10;
+$input-border-color: $base-light-15;
+$input-placeholder-color: $base-dark-10;
+
+$table-head-bg: $base-light-10;
+$table-head-color: $color;
+$table-border-color: $base-light-10;
 
 @import "bootstrap";
 
+h1, h2, h3, h4, h5, h6, .small {
+  font-weight: 100;
+}
+
 .navbar {
-  background-color: rgba($body-bg, 0.8);
-  filter: drop-shadow(0 3px 3px rgba(0,0,0,0.3));
-  .navbar-brand {
-    font-weight: 100;
-  }
+  background-color: rgba($base, 0.7);
+  filter: drop-shadow(0 3px 3px rgba(0,0,0,0.5));
+  font-weight: 100;
 }
 
 .jumbotron {
   background-image: image-url("main.jpg");
   background-size: cover;
   background-position: center center;
+  background-color: transparent;
   .container {
-    color: #fff;
+    color: $color;
     padding: 10rem 0;
     h1 {
       margin: 0;
@@ -69,6 +88,26 @@ $input-border-color: darken($base-color, 10%);
   padding: 1rem 5rem 2rem 5rem;
 }
 
+input::-webkit-input-placeholder {
+  font-weight: 100;
+}
+input:-moz-placeholder {
+  font-weight: 100;
+}
+input::-moz-placeholder {
+  font-weight: 100;
+}
+input:-ms-input-placeholder {
+  font-weight: 100;
+}
+.btn-import {
+  background-color: $base-light-15;
+  font-weight: 100;
+}
+
+th {
+  font-weight: 100;
+}
 td:empty {
   visibility: hidden;
 }

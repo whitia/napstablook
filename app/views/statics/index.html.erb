@@ -2,9 +2,9 @@
   <div class="container">
     <div class="row">
       <div class="col-xs-12 col-sm-9 text-center">
-        <h1>Organization investment.</h1>
-        <div class="small mb-2">For SBI SECURITIES Co.,Ltd.</div>
-          <button type="button" class="btn btn-outline-light rounded-pill px-5"
+        <h1>Organization investments.</h1>
+        <div class="small mb-2">for SBI SECURITIES Co.,Ltd.</div>
+          <button type="button" class="btn btn-outline-light rounded-pill px-5 font-weight-light"
                                 data-toggle="modal" data-target="#signup">
             Sign up for free!
           </button>
@@ -17,7 +17,7 @@
   <div class="modal-dialog modal-sma modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        <h4 class="my-3">Sign up</h4>
+        <h2 class="my-3">Sign up</h2>
 
         <%= form_with model: @user, local: true do |form| %>
           <%= render 'shared/error_messages' %>
@@ -33,7 +33,7 @@
           <div class="form-group">
             <%= form.password_field :password_confirmation, class: 'form-control', :placeholder => 'Confirmation' %>
           </div>
-          <%= form.submit 'Sign up!', class: 'btn btn-outline-light rounded-pill float-right' %>
+          <%= form.submit 'Sign up!', class: 'btn btn-outline-light rounded-pill float-right px-3 font-weight-light' %>
         <% end %>
 
       </div>
