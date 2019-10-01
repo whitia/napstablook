@@ -1,8 +1,11 @@
-<div class="container small">
+<div class="container font-weight-light">
   <h2 class="mt-5">Settings</h2>
   <h3>Account</h3>
   <p>
-    <%= link_to 'Delete', user_path(current_user.id), method: :delete, data: { confirm: 'Do you delete your account?' } %><br />
-    If you delete your account, investments and ratios associated with it are also deleted.
+    If you delete your account, investments and ratios associated with it are also deleted.<br />
+    This operation can never be restored.
   </p>
+  <%= link_to user_path(current_user.id), method: :delete, data: { confirm: 'Do you delete your account?' } do %>
+    <input type="button" class="btn btn-outline-danger rounded-pill px-3 font-weight-light" value="Delete" />
+  <% end %>
 </div>

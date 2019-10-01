@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root 'statics#index'
+  get '/help', to: 'statics#help'
   get '/signin', to: 'sessions#new'
   post '/signin', to: 'sessions#create'
   delete '/signout', to: 'sessions#destroy'
