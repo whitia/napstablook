@@ -27,11 +27,17 @@ $light: $color;
 $body-bg: $base;
 $body-color: $color;
 
+$link-color: darken($color, 30%);
+$link-decoration: none;
+$link-hover-color: darken($color, 30%);
+$link-hover-decoration: underline;
+
+
 $navbar-padding-y: .75rem;
 $navbar-brand-font-size: 32;
 
 $navbar-dark-color: #fff;
-$navbar-dark-hover-color: darken($navbar-dark-color, 15%);
+$navbar-dark-hover-color: darken($navbar-dark-color, 30%);
 
 $dropdown-font-size: 14;
 $dropdown-item-padding-y: .75rem;
