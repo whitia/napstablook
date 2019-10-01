@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Napstablook - Organization investment.</title>
+    <title>
+      <% if yield(:title).empty? %>
+        Napstablook - Organization investments.
+      <% else %>
+        <%= yield(:title) %> for Napstablook - Organization investments.
+      <% end %>
+    </title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 

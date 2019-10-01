@@ -1,8 +1,9 @@
+<% provide :title, 'Settings' %>
 <div class="container font-weight-light">
   <h2 class="mt-5">Settings</h2>
   <h3>Account</h3>
   <p>
-    If you delete your account, investments and ratios associated with it are also deleted.<br />
+    If you delete your account, investments and ratios associated with it in Organization are also deleted.<br />
     This operation can never be restored.
   </p>
   <%= link_to user_path(current_user.id), method: :delete, data: { confirm: 'Do you delete your account?' } do %>
