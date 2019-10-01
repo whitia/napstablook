@@ -4,7 +4,7 @@ class CategoriesController < ApplicationController
   end
 
   def create
-    Category.create(name: params[:name], color: params[:color])
+    Category.create(name: params[:category][:name], color: params[:category][:color])
     redirect_to categories_path
   end
 end
