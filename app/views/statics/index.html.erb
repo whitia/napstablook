@@ -2,12 +2,16 @@
   <div class="container">
     <div class="row">
       <div class="col-xs-12 col-sm-9 text-center">
-        <h1>Organization investments.</h1>
+        <h1>Organizing investments.</h1>
         <div class="small mb-2">for SBI SECURITIES Co.,Ltd.</div>
+        <% if logged_in? %>
+          <%= link_to 'Let''s begin to organizing investments!', user_funds_path(current_user.id), class: 'font-weight-light' %>
+        <% else %>
           <button type="button" class="btn btn-outline-light rounded-pill px-5 font-weight-light"
                                 data-toggle="modal" data-target="#signup">
             Sign up for free!
           </button>
+        <% end %>
       </div>
     </div>
   </div>
