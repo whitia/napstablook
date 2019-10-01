@@ -4,7 +4,7 @@ class FundsController < ApplicationController
   def index
     redirect_to root_path if current_user.id != params[:user_id].to_i
 
-    @funds = Fund.where(user_id: params[:user_id]).order('account DESC')
+    @funds = Fund.where(user_id: params[:user_id]).order('account DESC, name DESC')
 
     # Categories
     @categories = Array.new
