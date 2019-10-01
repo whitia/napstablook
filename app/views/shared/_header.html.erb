@@ -16,7 +16,7 @@
               <%= User.find(current_user.id).email %>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <%= link_to 'Organization', user_funds_path(current_user.id), class: 'dropdown-item' %>
+              <%= link_to 'Organize', user_funds_path(current_user.id), class: 'dropdown-item' %>
               <%= link_to 'Help', help_path, class: 'dropdown-item' %>
               <%= link_to 'Settings', user_path(current_user.id), class: 'dropdown-item' %>
               <div class="dropdown-divider"></div>
