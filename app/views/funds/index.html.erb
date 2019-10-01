@@ -7,10 +7,10 @@
       Do you necessary more help? You may be able to find solution in <%= link_to 'Help', help_path %>.
     </p>
     <ol>
-      <li>Import CSV file of your investments.</li>
+      <li>Import a CSV file of your investments.</li>
       <li>Choose "Class" of assets from dropdown list.</li>
-      <li>Look real ratios to chart or pie.</li>
-      <li>Input "Ideal" ratios on textbox.</li>
+      <li>Confirm real ratios to chart or pie.</li>
+      <li>Input "Ideal" ratios on textbox. Reload this page and confirm the latest pie.</li>
       <li>Input "Increase" on textbox if increase an investment.</li>
     </ol>
   </div>
@@ -166,7 +166,7 @@
 
   $('#submit').on('click', function() {
     if ($('#file_name').val() == '') {
-      alert('ファイルを選択してください');
+      alert('Nothing selected a CSV file.');
       $('#file_name').focus();
       return false;
     }
