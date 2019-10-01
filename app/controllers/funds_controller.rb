@@ -2,7 +2,7 @@ class FundsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    redirect_to root_path if !logged_in? || (current_user.id != params[:user_id].to_i)
+    redirect_to root_path if current_user.id != params[:user_id].to_i
 
     @funds = Fund.where(user_id: params[:user_id]).order('account DESC')
 

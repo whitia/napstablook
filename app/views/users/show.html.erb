@@ -1,2 +1,8 @@
-<%= @user.name %>, <%= @user.email %>
-<%= link_to 'Funds', user_funds_path(@user) %>
+<div class="container small">
+  <h2 class="mt-5">Settings</h2>
+  <h3>Account</h3>
+  <p>
+    <%= link_to 'Delete', user_path(current_user.id), method: :delete, data: { confirm: 'Do you delete your account?' } %><br />
+    If you delete your account, investments and ratios associated with it are also deleted.
+  </p>
+</div>
