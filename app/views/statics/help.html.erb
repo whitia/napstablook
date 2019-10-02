@@ -1,5 +1,50 @@
 <% provide :title, 'Help' %>
-<div class="container font-weight-light my-5">
-  <h2>Help</h2>
-  <p>Coming soon. ;(</p>
+<div class="container font-weight-light my-5">  
+  <div class="row">
+    <div class="col-xs-12 col-sm-2">
+      Help<br />
+      <div class="mt-1 small">
+        <%= link_to 'How to download', '#how-to-download' %><br />
+        <%= link_to 'An error occurred', '#an-error-occurred' %><br />
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-10">
+      <h2>Help</h2>
+
+      <a name="how-to-download">
+        <h3 class="mt-5">How to download</h3>
+      </a>
+      <p class="text-justify">
+        First, access to <%= link_to 'SBI SECURITIES Co.,Ltd.', 'https://site0.sbisec.co.jp/', target: :blank %>, input your name and password in each textboxes, click login button in Login page.
+      </p>
+      <div class="px-3 mb-5">
+        <%= image_tag 'help/1.png', class: 'img-fluid img-thumbnail' %>
+      </div>
+      <p class="text-justify">
+        Second, points on "口座管理" in top menu and click "トータルリターン".
+      </p>
+      <div class="px-3 mb-5">
+        <%= image_tag 'help/2.png', class: 'img-fluid img-thumbnail' %>
+      </div>
+      <p class="text-justify">
+        Third, click link of "保有中", "特定/一般" or "NISA/つみたてNISA".
+      </p>
+      <div class="px-3 mb-5">
+        <%= image_tag 'help/3.png', class: 'img-fluid img-thumbnail' %>
+      </div>
+      <p class="text-justify">
+        Last, click link of "CSVダウンロード", so has been downloaded CSV file.
+      </p>
+      <div class="px-3 mb-5">
+        <%= image_tag 'help/4.png', class: 'img-fluid img-thumbnail' %>
+      </div>
+
+      <a name="an-error-occurred">
+        <h3 class="mt-5">An error occurred</h3>
+      </a>
+      <p class="text-justify">
+        <%= link_to 'Please let me know', 'http://autovice.herokuapp.com/', target: :blank %>. Thank you.
+      </p>
+    </div>
+  </div>
 </div>
