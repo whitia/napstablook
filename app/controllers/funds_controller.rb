@@ -104,9 +104,17 @@ class FundsController < ApplicationController
     else
       Ratio.create(user_id: params[:user_id], category: params[:category], value: params[:value])
     end
+
+    ideal = Hash.new
+    Category.all.each do |category|
+      ratio = ratio = Ratio.where(user_id: params[:user_id], category: category.name)
+      ideal[category.name] = ratio.exists? ? ratio.first.value : 0.0
+    end
+
     render json: {
       category: params[:category],
-      value: params[:value]
+      value: params[:value],
+      ideal: ideal
     }
   end
 
@@ -133,6 +141,18 @@ class FundsController < ApplicationController
       before_ideal = before_ratio.exists? ? before_ratio.first.value : 0
       after_ideal  = after_ratio.exists? ? after_ratio.first.value : 0
       
+      funds = Fund.where(user_id: params[:user_id]).order('account desc, name desc')
+      real = Hash.new
+      ideal = Hash.new
+      Category.all.each do |category|
+        valuation = funds.where(category: category.name).sum('valuation') + \
+                    funds.where(category: category.name).sum('increase')
+        
+        ratio = Ratio.where(user_id: params[:user_id], category: category.name)
+        real[category.name] = 0 < valuation ? (valuation.to_f / funds.sum('valuation').to_f * 100).round(3) : 0
+        ideal[category.name] = ratio.exists? ? ratio.first.value : 0.0
+      end
+  
       return {
         before: {
           category: before_category,
@@ -147,6 +167,10 @@ class FundsController < ApplicationController
           valuation: after_valuation.to_s(:delimited),
           real: after_real,
           diff: (after_real - after_ideal).round(3)
+        },
+        ratio: {
+          real: real,
+          ideal: ideal
         }
       }
     end

@@ -3,14 +3,14 @@
   <h2 class="mt-5">Organize</h2>
   <div class="font-weight-light">
     <p>
-      You can organize your investments for SBI SECURITIES Co.,Ltd. in Organization, following next section and let's beginning.<br />
+      You can organize your investments for SBI SECURITIES Co.,Ltd. in Organize, following next section and let's beginning.<br />
       Do you necessary more help? You may be able to find solution in <%= link_to 'Help', help_path %>.
     </p>
     <ol>
       <li>Import a CSV file of your investments.</li>
-      <li>Choose "Class" of assets from dropdown list.</li>
+      <li>Choose "Class" of assets in dropdown list.</li>
       <li>Confirm real ratios to chart or pie.</li>
-      <li>Input "Ideal" ratios on textbox. Reload this page and confirm the latest pie.</li>
+      <li>Input "Ideal" ratios on textbox.</li>
       <li>Input "Increase" on textbox if increase an investment.</li>
     </ol>
   </div>
@@ -208,6 +208,11 @@
       } else {
         $('#比率差分_' + data.after.category).removeClass('text-danger');
       }
+
+      var real_chart = Chartkick.charts['real-ratio'];
+      real_chart.updateData(data.ratio.real);
+      var ideal_chart = Chartkick.charts['ideal-ratio'];
+      ideal_chart.updateData(data.ratio.ideal);
     })
     .fail(function(xhr, stat, err) {
       alert(err);
@@ -233,6 +238,9 @@
       } else {
         $('#比率差分_' + data.before.category).removeClass('text-danger');
       }
+
+      var real_chart = Chartkick.charts['real-ratio'];
+      real_chart.updateData(data.ratio.real);
     })
     .fail(function(xhr, stat, err) {
       alert(err);
@@ -250,7 +258,7 @@
       dataType: 'json'
     })
     .done(function(data, stat, xhr) {
-      diff = $('#実際比率_' + data.category).text().trim() - data.value;
+      var diff = $('#実際比率_' + data.category).text().trim() - data.value;
       $('#目標比率_' + data.category).val(parseInt(data.value).toFixed(1));
       $('#比率差分_' + data.category).text(diff.toFixed(3) + ' ');
       if (diff < 0) {
@@ -258,6 +266,9 @@
       } else {
         $('#比率差分_' + data.category).removeClass('text-danger');
       }
+
+      var chart = Chartkick.charts['ideal-ratio'];
+      chart.updateData(data.ideal);
     })
     .fail(function(xhr, stat, err) {
       alert(err);
