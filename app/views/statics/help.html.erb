@@ -5,11 +5,13 @@
       Help<br />
       <div class="mt-1 small">
         <%= link_to 'How to download', '#how-to-download' %><br />
+        <%= link_to 'Using an other broker', '#using-an-other-broker' %><br />
         <%= link_to 'An error occurred', '#an-error-occurred' %><br />
       </div>
     </div>
     <div class="col-xs-12 col-sm-10">
       <h2>Help</h2>
+      Do you necessary more help? You may be able to find solution.
 
       <a name="how-to-download">
         <h3 class="mt-5">How to download</h3>
@@ -39,11 +41,26 @@
         <%= image_tag 'help/4.png', class: 'img-fluid img-thumbnail' %>
       </div>
 
+      <a name="using-an-other-broker">
+        <h3 class="mt-5">Using an other broker</h3>
+      </a>
+      <p class="text-justify">
+        If you using an other broker different from SBI SECURITIES Co.,Ltd., the following steps will help.
+      </p>
+      <p class="text-justify">
+        Create a new CSV file, write following text as header words.
+        Write information of your investments after the second line.
+        The file will be able to import in Organize.
+        <div class="code rounded small">
+          ファンド名,口座種別,評価金額,買付金額
+        </div>
+      </p>
+
       <a name="an-error-occurred">
         <h3 class="mt-5">An error occurred</h3>
       </a>
       <p class="text-justify">
-        <%= link_to 'Please let me know', 'http://autovice.herokuapp.com/', target: :blank %>. Thank you.
+        <%= link_to 'Please let me know', 'http://autovice.herokuapp.com/', target: :blank %>, thank you.
       </p>
     </div>
   </div>
