@@ -89,6 +89,15 @@ h1, h2, h3, h4, h5, h6, .small {
   }
 }
 
+.intro-odd {
+  background-color: lighten($base, 2%);
+  padding: 2rem 0;
+}
+.intro-even {
+  background-color: $base;
+  padding: 2rem 0;
+}
+
 .modal-body {
   padding: 1rem 5rem 2rem 5rem;
 }
@@ -122,4 +131,11 @@ td:blank {
 
 .percent::after {
   content: "%";
+}
+
+.footer {
+  font-weight: 100;
+  text-align: center;
+  background-color: darken($base, 2%);
+  padding: 5rem 0;
 }
