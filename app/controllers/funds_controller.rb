@@ -34,7 +34,6 @@ class FundsController < ApplicationController
       valuation = @assets[category.name][:評価金額]
       ratio = Ratio.where(user_id: params[:user_id], category: category.name)
       @assets[category.name][:実際比率] = 0 < valuation ? (valuation.to_f / @sum['評価金額'].to_f * 100).round(3) : 0
-      byebug
       @assets[category.name][:目標比率] = ratio.present? ? ratio.first.value : 0.0
       @assets[category.name][:比率差分] = (@assets[category.name][:実際比率] - @assets[category.name][:目標比率]).round(3)
     end
