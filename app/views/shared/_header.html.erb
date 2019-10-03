@@ -48,7 +48,8 @@
           <div class="form-group">
             <%= form.password_field :password, class: 'form-control', :placeholder => 'Password' %>
           </div>
-          <%= form.submit 'Sign in', class: 'btn btn-outline-light rounded-pill float-right px-3 font-weight-light' %>
+          <%= form.submit 'Sign in', class: 'btn btn-outline-light rounded-pill float-right px-3 font-weight-light',
+                                     data: { 'disable-with': 'Sign in' } %>
         <% end %>
 
       </div>

@@ -34,7 +34,8 @@ class FundsController < ApplicationController
       valuation = @assets[category.name][:評価金額]
       ratio = Ratio.where(user_id: params[:user_id], category: category.name)
       @assets[category.name][:実際比率] = 0 < valuation ? (valuation.to_f / @sum['評価金額'].to_f * 100).round(3) : 0
-      @assets[category.name][:目標比率] = ratio.exists? ? ratio.first.value : 0.0
+      byebug
+      @assets[category.name][:目標比率] = ratio.present? ? ratio.first.value : 0.0
       @assets[category.name][:比率差分] = (@assets[category.name][:実際比率] - @assets[category.name][:目標比率]).round(3)
     end
 
@@ -87,22 +88,22 @@ class FundsController < ApplicationController
     after_category  = params[:category]
     fund.update(category: (after_category.present? ? after_category : nil))
 
-    render json: get_ratios(fund, before_category, after_category)
+    render json: get_ratios('Category', fund, before_category, after_category)
   end
 
   def set_increase
     fund = Fund.find(params[:id])
-    fund.update(increase: params[:increase])
+    fund.update(increase: params[:increase].empty? ? 0 : params[:increase])
 
-    render json: get_ratios(fund, fund.category, fund.category)
+    render json: get_ratios('Increase', fund, fund.category, fund.category), status: 200
   end
 
   def set_ratio
     ratio = Ratio.where(user_id: params[:user_id], category: params[:category])
     if ratio.exists?
-      ratio.update(value: params[:value])
+      ratio.update(value: params[:ratio])
     else
-      Ratio.create(user_id: params[:user_id], category: params[:category], value: params[:value])
+      Ratio.create(user_id: params[:user_id], category: params[:category], value: params[:ratio])
     end
 
     ideal = Hash.new
@@ -112,14 +113,15 @@ class FundsController < ApplicationController
     end
 
     render json: {
+      event: 'Ratio',
       category: params[:category],
-      value: params[:value],
+      value: params[:ratio],
       ideal: ideal
     }
   end
 
   private
-    def get_ratios(fund, before_category, after_category)
+    def get_ratios(event, fund, before_category, after_category)
       # Purchases
       before_purchase = Fund.where(user_id: fund.user_id, category: before_category).sum('purchase')
       after_purchase  = Fund.where(user_id: fund.user_id, category: after_category).sum('purchase')
@@ -154,6 +156,7 @@ class FundsController < ApplicationController
       end
   
       return {
+        event: event,
         before: {
           category: before_category,
           purchase: before_purchase.to_s(:delimited),

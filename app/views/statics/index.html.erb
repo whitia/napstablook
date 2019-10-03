@@ -61,7 +61,8 @@
           <div class="form-group">
             <%= form.password_field :password_confirmation, class: 'form-control', :placeholder => 'Confirmation' %>
           </div>
-          <%= form.submit 'Sign up!', class: 'btn btn-outline-light rounded-pill float-right px-3 font-weight-light' %>
+          <%= form.submit 'Sign up!', class: 'btn btn-outline-light rounded-pill float-right px-3 font-weight-light',
+                                      data: { 'disable-with': 'Sign up!' } %>
         <% end %>
 
       </div>
