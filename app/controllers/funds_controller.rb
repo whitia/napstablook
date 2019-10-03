@@ -27,12 +27,14 @@ class FundsController < ApplicationController
     # Ratios
     @assets = Hash.new { |h,k| h[k] = {} }
     Category.all.each do |category|
+      ratio = Ratio.where(user_id: params[:user_id], category: category.name)
+
       @assets[category.name][:買付金額] = @funds.where(category: category.name).sum('purchase')
       @assets[category.name][:評価金額] = @funds.where(category: category.name).sum('valuation') + \
-                                         @funds.where(category: category.name).sum('increase')
+                                         (ratio.present? ? (ratio.first.increase.nil? ? 0 : ratio.first.increase) : 0)
       
       valuation = @assets[category.name][:評価金額]
-      ratio = Ratio.where(user_id: params[:user_id], category: category.name)
+      @assets[category.name][:増資額] = (ratio.present? ? (ratio.first.increase.nil? ? 0 : ratio.first.increase) : 0)
       @assets[category.name][:実際比率] = 0 < valuation ? (valuation.to_f / @sum['評価金額'].to_f * 100).round(3) : 0
       @assets[category.name][:目標比率] = ratio.present? ? ratio.first.value : 0.0
       @assets[category.name][:比率差分] = (@assets[category.name][:実際比率] - @assets[category.name][:目標比率]).round(3)
@@ -91,9 +93,10 @@ class FundsController < ApplicationController
   end
 
   def set_increase
-    fund = Fund.find(params[:id])
-    fund.update(increase: params[:increase].empty? ? 0 : params[:increase])
+    ratio = Ratio.where(user_id: params[:user_id], category: params[:category])
+    ratio.update(increase: params[:increase].empty? ? 0 : params[:increase])
 
+    fund = Fund.where(user_id: params[:user_id], category: params[:category]).first
     render json: get_ratios('Increase', fund, fund.category, fund.category), status: 200
   end
 
@@ -126,10 +129,12 @@ class FundsController < ApplicationController
       after_purchase  = Fund.where(user_id: fund.user_id, category: after_category).sum('purchase')
   
       # Valuations
+      before_ratio = Ratio.where(user_id: params[:user_id], category: before_category)
+      after_ratio  = Ratio.where(user_id: params[:user_id], category: after_category)
       before_valuation = Fund.where(user_id: fund.user_id, category: before_category).sum('valuation') + \
-                         Fund.where(user_id: fund.user_id, category: before_category).sum('increase')
+                         (before_ratio.present? ? (before_ratio.first.increase.nil? ? 0 : before_ratio.first.increase) : 0)
       after_valuation  = Fund.where(user_id: fund.user_id, category: after_category).sum('valuation') + \
-                         Fund.where(user_id: fund.user_id, category: after_category).sum('increase')
+                         (after_ratio.present? ? (after_ratio.first.increase.nil? ? 0 : after_ratio.first.increase) : 0)
       
       # Real ratios
       sum_valuation = Fund.where(user_id: fund.user_id).sum('valuation')
@@ -146,10 +151,10 @@ class FundsController < ApplicationController
       real = Hash.new
       ideal = Hash.new
       Category.all.each do |category|
-        valuation = funds.where(category: category.name).sum('valuation') + \
-                    funds.where(category: category.name).sum('increase')
-        
         ratio = Ratio.where(user_id: params[:user_id], category: category.name)
+        valuation = funds.where(category: category.name).sum('valuation') + \
+                    (ratio.present? ? (ratio.first.increase.nil? ? 0 : ratio.first.increase) : 0)
+        
         real[category.name] = 0 < valuation ? (valuation.to_f / funds.sum('valuation').to_f * 100).round(3) : 0
         ideal[category.name] = ratio.exists? ? ratio.first.value : 0.0
       end
