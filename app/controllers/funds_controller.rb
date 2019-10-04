@@ -62,7 +62,6 @@ class FundsController < ApplicationController
                         valuation: row['評価金額'],
                         difference: row['評価金額'].to_i - row['買付金額'].to_i,
                         category: nil,
-                        increase: 0,
                         user_id: params[:user_id])
     end
     # Update new category to current it if exists fund
