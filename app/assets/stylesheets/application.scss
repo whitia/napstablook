@@ -65,7 +65,7 @@ $table-border-color: $base-light-10;
 
 @import "bootstrap";
 
-h1, h2, h3, h4, h5, h6, .small {
+h1, h2, h3, h4, h5, h6 {
   font-weight: 100;
 }
 
@@ -119,9 +119,6 @@ input:-ms-input-placeholder {
   font-weight: 100;
 }
 
-th {
-  font-weight: 100;
-}
 td:empty {
   visibility: hidden;
 }
@@ -139,7 +136,8 @@ td:blank {
 }
 
 .footer {
-  font-weight: 100;
+  font-size: 80%;
+  font-weight: 400;
   text-align: center;
   background-color: darken($base, 2%);
   padding: 1rem 0;
