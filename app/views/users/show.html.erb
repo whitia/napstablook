@@ -1,12 +1,12 @@
 <% provide :title, 'Settings' %>
 <div class="container font-weight-light my-5">
-  <h2>Settings</h2>
-  <h3 class="mt-5">Account</h3>
+  <h2 class="font-weight-light">設定</h2>
+  <h3 class="mt-5 font-weight-light">アカウント</h3>
   <p>
-    If you delete your account, investments and ratios associated with it in Organize are also deleted.<br />
-    This operation can never be restored.
+    アカウントを削除すると、このアカウントに関連する投資信託や比率情報も削除されます。<br />
+    この操作は取り消せません。
   </p>
-  <%= link_to user_path(current_user.id), method: :delete, data: { confirm: 'Do you delete your account?' } do %>
-    <input type="button" class="btn btn-outline-danger rounded-pill px-3 font-weight-light" value="Delete" />
+  <%= link_to user_path(current_user.id), method: :delete, data: { confirm: '本当にアカウントを削除しますか？' } do %>
+    <input type="button" class="btn btn-outline-danger" value="削除" />
   <% end %>
 </div>

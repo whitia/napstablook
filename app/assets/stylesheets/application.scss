@@ -1,144 +1,86 @@
-/*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
- * vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
- *= require_tree .
- *= require_self
- */
+$orange: rgb(255, 170, 0);
 
-$color: #abd;
-$base: #090b34;
-$base-light-5: lighten($base, 5%);
-$base-light-10: lighten($base, 10%);
-$base-light-15: lighten($base, 15%);
-$base-dark-5: darken($base, 5%);
-$base-dark-10: darken($base, 10%);
-$base-dark-15: darken($base, 15%);
+$body-bg: #fff;
+$body-color: #000;
 
-$light: $color;
-$body-bg: $base;
-$body-color: $color;
-
-$link-color: darken($color, 30%);
+$link-color: $orange;
 $link-decoration: none;
-$link-hover-color: darken($color, 30%);
-$link-hover-decoration: underline;
+$link-hover-color: darken($orange, 10%);
+$link-hover-decoration: none;
 
+$navbar-dark-color: $orange;
+$navbar-dark-hover-color: darken($orange, 10%);
 
-$navbar-padding-y: .75rem;
-$navbar-brand-font-size: 32;
-
-$navbar-dark-color: #fff;
-$navbar-dark-hover-color: darken($navbar-dark-color, 30%);
-
-$dropdown-font-size: 14;
-$dropdown-item-padding-y: .75rem;
-$dropdown-item-padding-x: 1.25rem;
-$dropdown-bg: $base-light-5;
-$dropdown-border-width: 0;
-$dropdown-border-radius: 0;
-$dropdown-divider-bg: $base-light-10;
-$dropdown-link-color: $color;
-$dropdown-link-hover-color: $color;
-$dropdown-link-hover-bg: $base-light-10;
-$dropdown-link-active-color: $color;
-$dropdown-link-active-bg: $base-light-10;
-
-$modal-content-bg: $base;
-
-$input-color: $color;
-$input-bg: $base-light-10;
-$input-border-color: $base-light-15;
-$input-placeholder-color: $base-dark-10;
-
-$table-head-bg: $base-light-10;
-$table-head-color: $color;
-$table-border-color: $base-light-10;
-
-@import "bootstrap";
-
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 100;
-}
+@import 'bootstrap';
 
 .navbar {
-  background-color: rgba($base, 0.7);
-  filter: drop-shadow(0 3px 3px rgba(0,0,0,0.5));
-  font-weight: 100;
+  background-color: #000;
+  .navbar-brand {
+    font-size: 32px;
+    color: #fff;
+    font-weight: 100;
+  }
 }
 
 .jumbotron {
-  background-image: image-url("main.jpg");
-  background-size: cover;
-  background-position: center center;
-  background-color: transparent;
-  .container {
-    color: $color;
-    padding: 10rem 0;
-    h1 {
-      margin: 0;
-    }
+  background-image: url("main.jpg");
+  background-size: auto;
+  background-position: center bottom;
+  color: #fff;
+  padding: 150px 0;
+  text-align: center;
+  margin-bottom: 0;
+  h1 {
+    font-size: 32px;
+    font-weight: 300;
+  }
+  img {
+    margin: 30px 0;
+  }
+  p {
+    font-size: 16px;
+    font-weight: 300;
   }
 }
 
 .intro-odd {
-  background-color: lighten($base, 2%);
-  padding: 2rem 0;
+  padding: 50px 0;
+  h2 {
+    font-weight: 300;
+  }
 }
 .intro-even {
-  background-color: $base;
-  padding: 2rem 0;
-}
-
-.modal-body {
-  padding: 1rem 5rem 2rem 5rem;
-}
-
-input::-webkit-input-placeholder {
-  font-weight: 100;
-}
-input:-moz-placeholder {
-  font-weight: 100;
-}
-input::-moz-placeholder {
-  font-weight: 100;
-}
-input:-ms-input-placeholder {
-  font-weight: 100;
-}
-.btn-import {
-  background-color: $base-light-15;
-  font-weight: 100;
-}
-
-td:empty {
-  visibility: hidden;
-}
-td:blank {
-  visibility: hidden;
-}
-
-.percent::after {
-  content: "%";
-}
-
-.code {
-  background-color: $base-dark-5;
-  padding: 1rem;
+  padding: 50px 0;
+  h2 {
+    font-weight: 300;
+  }
 }
 
 .footer {
-  font-size: 80%;
-  font-weight: 400;
+  font-size: 12PX;
+  font-weight: 300;
   text-align: center;
-  background-color: darken($base, 2%);
-  padding: 1rem 0;
+  background-color: #000;
+  color: #aaa;
+  padding: 15px 0;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  background-color: #000;
+  font-size: 12px;
+  color: #fff;
 }

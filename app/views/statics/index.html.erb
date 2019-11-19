@@ -1,70 +1,39 @@
-<div class="jumbotron rounded-0 mb-0">
+<div class="jumbotron jumbotron-fluid">
   <div class="container">
-    <div class="row">
-      <div class="col-xs-12 col-sm-9 text-center">
-        <h1>Organize investments</h1>
-        <div class="small mb-2">for SBI SECURITIES Co.,Ltd.</div>
-        <% if logged_in? %>
-          <%= link_to 'Let\'s begin to organize investments!', user_funds_path(current_user.id), class: 'font-weight-light' %>
-        <% else %>
-          <button type="button" class="btn btn-outline-light rounded-pill px-5 font-weight-light"
-                                data-toggle="modal" data-target="#signup">
-            Sign up for free!
-          </button>
-        <% end %>
-      </div>
-    </div>
+    <h1>投資信託管理サービス</h1>
+    <%= image_tag 'logo.png', alt: 'Napstablook' %>
+    <p>
+      あなたの保有する投資信託をかんたん整理。<br />
+      リバランス（保有比率調整）のシミュレーションもらくらく。<br />
+      <%= link_to 'ユーザー登録（無料）', new_user_path %>
+      </button>
+    </p>
   </div>
 </div>
 
 <div class="intro-odd">
   <div class="container">
     <div class="row align-items-center">
-      <div class="col-xs-12 col-sm-5 p-5">
+      <div class="col-12 col-sm-5 p-5">
         <%= image_tag '1.png', class: 'img-fluid' %>
       </div>
-      <div class="col-xs-12 col-sm-7">
-        <h2 class="mb-3">Organizable investments.</h2>
-        <p class="font-weight-light">You can organize your investments for SBI SECURITIES Co.,Ltd. in Organize.</p>
+      <div class="col-12 col-sm-7">
+        <h2 class="mb-3">投資信託をかんたん整理</h2>
+        <p class="font-weight-light">かんたんな操作だけであなたの保有する投資信託をきれいに整理できます。</p>
       </div>
     </div>
   </div>
 </div>
+<hr />
 <div class="intro-even">
   <div class="container">
     <div class="row align-items-center">
-      <div class="col-xs-12 col-sm-7">
-        <h2 class="mb-3">Ajusting a capital increase.</h2>
-        <p class="font-weight-light">Will help you that be able to confirm easily if you want to increase a capital.</p>
+      <div class="col-12 col-sm-7">
+        <h2 class="mb-3">リバランス（保有比率調整）</h2>
+        <p class="font-weight-light">リバランス（保有比率調整）を行う前に増資金額のシミュレーションができます。</p>
       </div>
-      <div class="col-xs-12 col-sm-5 p-5">
+      <div class="col-12 col-sm-5 p-5">
         <%= image_tag '2.png', class: 'img-fluid' %>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="signup" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-sma modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <h2 class="my-3">Sign up</h2>
-
-        <%= form_with model: @user, local: true do |form| %>
-          <%= render 'shared/error_messages' %>
-          <div class="form-group">
-            <%= form.email_field :email, class: 'form-control', :placeholder => 'Email' %>
-          </div>
-          <div class="form-group">
-            <%= form.password_field :password, class: 'form-control', :placeholder => 'Password' %>
-          </div>
-          <div class="form-group">
-            <%= form.password_field :password_confirmation, class: 'form-control', :placeholder => 'Confirmation' %>
-          </div>
-          <%= form.submit 'Sign up!', class: 'btn btn-outline-light rounded-pill float-right px-3 font-weight-light',
-                                      data: { 'disable-with': 'Sign up!' } %>
-        <% end %>
-
       </div>
     </div>
   </div>

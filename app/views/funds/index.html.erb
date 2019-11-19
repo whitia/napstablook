@@ -1,39 +1,31 @@
 <% provide :title, 'Organize' %>
-<div class="container my-5">
-  <h2>Organize</h2>
+<div class="container py-5">
+  <h2 class="font-weight-light">投資信託</h2>
   <div class="font-weight-light">
     <p>
-      You can organize your investments for SBI SECURITIES Co.,Ltd. in Organize, following next section and let's beginning.<br />
-      Do you necessary more help? You may be able to find solution in <%= link_to 'Help', help_path %>.
+      あなたの保有する投資信託をかんたんな操作だけできれいに整理できます。下記の手順に従ってはじめましょう。<br />
+      さらに助けが必要ですか？ <%= link_to 'ヘルプ', help_path %>で解決策が見つかるかもしれません。
     </p>
     <ol>
-      <li>Import a CSV file of your investments.</li>
-      <li>Choose "Class" of assets in dropdown list.</li>
-      <li>Confirm real ratios to chart or pie.</li>
-      <li>Input "Ideal" ratios on textbox.</li>
-      <li>Input "Increase" on textbox if increase an investment.</li>
+      <li>SBI証券からダウンロードした投資信託のCSVファイルをインポートします。</li>
+      <li>投資信託一覧から各投資信託のクラスをリストから選択します。</li>
+      <li>表、または円グラフで投資信託の比率が確認できます。</li>
+      <li>比率から各クラスの目標比率を入力します。</li>
+      <li>増資金額を入力することで、リバランスのシミュレーションができます。</li>
     </ol>
   </div>
 
   <div class="row my-5">
-    <div class="col-xs-12 col-sm-12">
-      <h3>Import</h3>
+    <div class="col-12 col-sm-12">
+      <h3 class="font-weight-light">インポート</h3>
       <%= form_with url: import_user_funds_path, local: true, multipart: true do |form| %>
         <div class="input-group input-group-lg">
-          <div class="input-group-prepend">
-            <button type="button" class="btn btn-import dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Broker
-            </button>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">SBI SECURITIES CO.,Ltd.</a>
-            </div>
-          </div>
           <%= text_field_tag 'file_name', '', class: 'form-control',
                                               onclick: '$("#file").click();',
-                                              :placeholder => 'Click here and choose CSV file.' %>
+                                              placeholder: 'ここをクリックしてCSVファイルを選択してください' %>
           <%= file_field_tag :file, style: 'display: none', onchange: 'file_selected($(this));' %>
           <div class="input-group-append">
-            <%= submit_tag 'Import', id: 'submit', class: 'btn btn-import px-4',
+            <%= submit_tag 'Import', id: 'submit', class: 'btn btn-dark px-4',
                                                    data: { 'disable-with': 'Importing...' } %>
           </div>
         </div>
@@ -43,17 +35,17 @@
 
   <% if @funds.present? %>
     <div class="row my-5">
-      <div class="col-xs-12 col-sm-12">
-        <h3 class="">Investments</h3>
+      <div class="col-12 col-sm-12">
+        <h3 class="font-weight-light">投資信託一覧</h3>
         <table class="table small">
           <thead class="thead-light">
             <tr>
-              <th width="10%" class="text-center">Account</th>
-              <th width="50%" class="text-center">Name</th>
-              <th width="10%" class="text-center">Purchase</th>
-              <th width="10%" class="text-center">Valuation</th>
-              <th width="10%" class="text-center">Difference</th>
-              <th width="10%" class="text-center">Class</th>
+              <th width="10%" class="text-center">種別</th>
+              <th width="50%" class="text-center">名称</th>
+              <th width="10%" class="text-center">購入金額</th>
+              <th width="10%" class="text-center">評価金額</th>
+              <th width="10%" class="text-center">評価損益</th>
+              <th width="10%" class="text-center">クラス</th>
             </tr>
           </thead>
           <tbody>
@@ -95,18 +87,18 @@
     </div>
   
     <div class="row my-5">
-      <div class="col-xs-12 col-sm-8">
-        <h3>Ratio</h3>
+      <div class="col-12 col-sm-8">
+        <h3 class="font-weight-light">比率</h3>
         <table class="table small">
           <thead>
             <tr class="thead-light">
-              <th width="5%" class="text-center">Class</th>
-              <th width="15%" class="text-center">Purchase</th>
-              <th width="15%" class="text-center">Valuation</th>
-              <th width="20%" class="text-center">Increase</th>
-              <th width="15%" class="text-center">Real</th>
-              <th width="15%" class="text-center">Ideal</th>
-              <th width="15%" class="text-center">Difference</th>
+              <th width="10%" class="text-center">クラス</th>
+              <th width="15%" class="text-center">購入金額</th>
+              <th width="15%" class="text-center">評価金額</th>
+              <th width="15%" class="text-center">増資金額</th>
+              <th width="15%" class="text-center">実際比率</th>
+              <th width="15%" class="text-center">目標比率</th>
+              <th width="15%" class="text-center">比率差分</th>
             </tr>
           </thead>
           <tbody>
@@ -151,8 +143,8 @@
         </table>
       </div>
 
-      <div class="col-xs-12 col-sm-4">
-        <h4>Real</h4>
+      <div class="col-12 col-sm-4">
+        <h4 class="font-weight-light">実際比率</h4>
         <%= pie_chart @real, id: 'real-ratio',
                              colors: @colors,
                              legend: 'bottom',
@@ -160,7 +152,7 @@
                              donut: true,
                              suffix: '%' %>
         <br />
-        <h4>Ideal</h4>
+        <h4 class="font-weight-light">目標比率</h4>
         <%= pie_chart @ideal, id: 'ideal-ratio',
                               colors: @colors,
                               legend: 'bottom',

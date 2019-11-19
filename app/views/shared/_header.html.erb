@@ -4,55 +4,30 @@
       <%= image_tag 'napstablook.png', :size => '48x48' %>
       <span class="align-bottom">Napstablook</span>
     <% end %>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="ナビゲーションの切替">
       <span class="navbar-toggler-icon"></span>
     </button>
-  
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
         <% if logged_in? %>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle font-weight-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <%= User.find(current_user.id).email %>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <%= link_to 'Organize', user_funds_path(current_user.id), class: 'dropdown-item' %>
-              <%= link_to 'Help', help_path, class: 'dropdown-item' %>
-              <%= link_to 'Settings', user_path(current_user.id), class: 'dropdown-item' %>
-              <div class="dropdown-divider"></div>
-              <%= link_to 'Sign out', signout_path, method: :delete, class: 'dropdown-item' %>
-            </div>
+          <li class="nav-item font-weight-light">
+            <%= link_to '投資信託', user_funds_path(current_user.id), class: 'nav-link' %>
+          </li>
+          <li class="nav-item font-weight-light">
+            <%= link_to '設定', user_path(current_user.id), class: 'nav-link' %>
+          </li>
+          <li class="nav-item font-weight-light">
+            <%= link_to 'ヘルプ', help_path(current_user.id), class: 'nav-link' %>
+          </li>
+          <li class="nav-item font-weight-light">
+            <%= link_to 'ログアウト', session_path(current_user.id), class: 'nav-link', method: 'delete', data: { confirm: '本当にログアウトしますか？' } %>
           </li>
         <% else %>
-          <li class="nav-item">
-            <button type="button" class="btn btn-link nav-link font-weight-light" data-toggle="modal" data-target="#signin">
-              Sign in
-            </button>
+          <li class="nav-item font-weight-light">
+            <%= link_to 'ログイン', new_session_path %>
           </li>
         <% end %>
       </ul>
     </div>
   </div>
 </nav>
-
-<div class="modal fade" id="signin" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-sma modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <h2 class="my-3">Sign in</h2>
-
-        <%= form_with url: signin_path, local: true do |form| %>
-          <div class="form-group">
-            <%= form.email_field :email, class: 'form-control', :placeholder => 'Email' %>
-          </div>
-          <div class="form-group">
-            <%= form.password_field :password, class: 'form-control', :placeholder => 'Password' %>
-          </div>
-          <%= form.submit 'Sign in', class: 'btn btn-outline-light rounded-pill float-right px-3 font-weight-light',
-                                     data: { 'disable-with': 'Sign in' } %>
-        <% end %>
-
-      </div>
-    </div>
-  </div>
-</div>
