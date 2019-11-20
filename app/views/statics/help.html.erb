@@ -1,74 +1,74 @@
 <% provide :title, 'Help' %>
-<div class="container font-weight-light my-5">  
+<div class="container font-weight-light py-5">  
   <div class="row">
     <div class="col-xs-12 col-sm-2">
       Help<br />
       <div class="mt-1 small">
-        <%= link_to 'How to download', '#how-to-download' %><br />
-        <%= link_to 'Using an other broker', '#using-an-other-broker' %><br />
-        <%= link_to 'What\'s the class', '#whats-the-class' %><br />
-        <%= link_to 'An error occurred', '#an-error-occurred' %><br />
+        <%= link_to 'SBI証券のCSVファイルをダウンロードする', '#how-to-download' %><br />
+        <%= link_to 'SBI証券以外の投資信託を管理したい', '#using-an-other-broker' %><br />
+        <%= link_to '投資信託の"クラス"とは？', '#whats-the-class' %><br />
+        <%= link_to 'エラーが発生した場合', '#an-error-occurred' %><br />
       </div>
     </div>
     <div class="col-xs-12 col-sm-10">
-      <h2>Help</h2>
-      Do you necessary more help? You may be able to find solution.
+      <h2 class="font-weight-light">ヘルプ</h2>
 
       <a name="how-to-download">
-        <h3 class="mt-5">How to download</h3>
+        <h3 class="mt-5 font-weight-light">SBI証券のCSVファイルをダウンロードする</h3>
       </a>
       <p class="text-justify">
-        First, access to <%= link_to 'SBI SECURITIES Co.,Ltd.', 'https://site0.sbisec.co.jp/', target: :blank %>, input your name and password in each textboxes, click login button in Login page.
+        <%= link_to 'SBI証券', 'https://site0.sbisec.co.jp/', target: :blank %>にアクセスし、ログインします。
       </p>
       <div class="px-3 mb-5">
         <%= image_tag 'help/1.png', class: 'img-fluid img-thumbnail' %>
       </div>
       <p class="text-justify">
-        Second, points on "口座管理" in top menu and click "トータルリターン".
+        ページ上部の"口座管理"をポイントし、"トータルリターン"をクリックします。
       </p>
       <div class="px-3 mb-5">
         <%= image_tag 'help/2.png', class: 'img-fluid img-thumbnail' %>
       </div>
       <p class="text-justify">
-        Third, click link of "保有中", "特定/一般" or "NISA/つみたてNISA".
+        "保有中"、"特定/一般"、または"NISA/つみたてNISA"をクリックします。
       </p>
       <div class="px-3 mb-5">
         <%= image_tag 'help/3.png', class: 'img-fluid img-thumbnail' %>
       </div>
       <p class="text-justify">
-        Last, click link of "CSVダウンロード", so has been downloaded CSV file.
+        "CSVダウンロード"をクリックしてCSVファイルをダウンロードします。
       </p>
       <div class="px-3 mb-5">
         <%= image_tag 'help/4.png', class: 'img-fluid img-thumbnail' %>
       </div>
 
       <a name="using-an-other-broker">
-        <h3 class="mt-5">Using an other broker</h3>
+        <h3 class="mt-5 font-weight-light">SBI証券以外で保有する投資信託を管理したい</h3>
       </a>
       <p class="text-justify">
-        If you using an other broker different from SBI SECURITIES Co.,Ltd., the following steps will help.
+        もしあなたがSBI証券以外で投資信託を保有している場合、下記の手順が役立ちます。
       </p>
       <p class="text-justify">
-        Create a new CSV file, copy and past following text as header words.
-        Input information of your investments after the second line.
-        The file will be able to import in Organize.
-        <div class="code rounded small">
+        新しいCSVファイルを作成し、下記のテキストをコピー＆ペーストします。
+        続いて、2行目以降にあなたの投資信託の情報を記述します。
+        そのCSVファイルは投資信託管理画面でインポートできるでしょう。
+        <div class="rounded small bg-light p-3 m-3">
           ファンド名,口座種別,評価金額,買付金額
         </div>
       </p>
 
       <a name="whats-the-class">
-        <h3 class="mt-5">What's the class</h3>
+        <h3 class="mt-5 font-weight-light">投資信託の"クラス"とは？</h3>
       </a>
       <p class="text-justify">
-        The class is category of investment trust, 9 types of combination of 3 areas and 3 commodities, and 1 type.
+        投資信託の"クラス"は、3つのエリアと3つの商品を組み合わせた9つのカテゴリーにその他を加えた合計10つあります。
+        これらに分散投資することで、投資のリスクを低減することができるとされています。
         <table class="table small">
           <thead class="thead-light">
             <tr>
-              <th width="10%" class="text-center">Class</th>
-              <th width="10%" class="text-center">Area</th>
-              <th width="10%" class="text-center">Commodity</th>
-              <th width="7  0%" class="text-center">Example</th>
+              <th width="10%" class="text-center">クラス</th>
+              <th width="10%" class="text-center">エリア</th>
+              <th width="10%" class="text-center">商品</th>
+              <th width="7  0%" class="text-center">投資信託の例</th>
             </tr>
           </thead>
           <tbody>
@@ -137,10 +137,10 @@
       </p>
 
       <a name="an-error-occurred">
-        <h3 class="mt-5">An error occurred</h3>
+        <h3 class="mt-5 font-weight-light">エラーが発生した場合</h3>
       </a>
       <p class="text-justify">
-        <%= link_to 'Please let me know', 'https://www.autovice.jp/', target: :blank %>, thank you.
+        お手数ですが、<%= link_to 'こちら', 'https://www.autovice.jp/', target: :blank %>からご連絡ください。
       </p>
     </div>
   </div>
