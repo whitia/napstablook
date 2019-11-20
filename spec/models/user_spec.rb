@@ -12,7 +12,7 @@ RSpec.describe User, type: :model do
   
   describe '#emal' do
     it 'is invalid without an email' do
-      user = FactoryBot.build(:user, email: nil)
+      user = FactoryBot.build(:user, :email_empty)
       user.valid?
       expect(user.errors[:email]).to include('can\'t be blank')
     end
@@ -33,7 +33,7 @@ RSpec.describe User, type: :model do
   
   describe '#password' do
     it 'is invalid without a password' do
-      user = User.new(password: nil, password_confirmation: nil)
+      user = FactoryBot.build(:user, :password_empty)
       user.valid?
       expect(user.errors[:password]).to include('can\'t be blank')
     end
