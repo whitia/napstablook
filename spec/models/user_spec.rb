@@ -5,12 +5,7 @@ RSpec.describe User, type: :model do
     expect(FactoryBot.build(:user)).to be_valid
   end
 
-  it 'is valid with an email and password' do
-    user = FactoryBot.build(:user)
-    expect(user).to be_valid
-  end
-  
-  describe '#emal' do
+  describe '#email' do
     it 'is invalid without an email' do
       user = FactoryBot.build(:user, :email_empty)
       user.valid?
@@ -49,5 +44,16 @@ RSpec.describe User, type: :model do
       user.valid?
       expect(user.errors[:password]).to include('is too short (minimum is 6 characters)')
     end
+  end
+
+  describe 'association' do
+    it 'delete funds when deleted a user associated it' do
+      user = FactoryBot.build(:user)
+      user.funds << FactoryBot.build(:fund)
+      user.save
+      expect{ user.destroy }.to change{ Fund.count }.by(-1)
+    end
+
+    it 'delete ratios when deleted a user associated it'
   end
 end

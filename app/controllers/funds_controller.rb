@@ -76,6 +76,7 @@ class FundsController < ApplicationController
     end
     # Delete current user's all columns
     Fund.where(user_id: params[:user_id]).destroy_all
+    # Bulk insert by activerecord-import
     Fund.import(funds)
 
     @funds = Fund.where(user_id: params[:user_id]).order('account DESC')
