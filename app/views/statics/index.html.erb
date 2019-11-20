@@ -5,7 +5,9 @@
     <p>
       あなたの保有する投資信託をかんたん整理。<br />
       リバランス（保有比率調整）のシミュレーションもらくらく。<br />
-      <%= link_to 'ユーザー登録（無料）', new_user_path %>
+      <% unless logged_in? %>
+        <%= link_to 'ユーザー登録（無料）', new_user_path %>
+      <% end %>
       </button>
     </p>
   </div>
