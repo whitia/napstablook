@@ -14,6 +14,7 @@ class UsersController < ApplicationController
       log_in(@user)
       redirect_to user_path(@user)
     else
+      byebug
       redirect_to root_path
     end
   end
