@@ -2,14 +2,14 @@
   <div class="container">
     <%= link_to root_path, class:'navbar-brand' do %>
       <%= image_tag 'napstablook.png', :size => '48x48' %>
-      <span class="align-bottom">Napstablook</span>
+      <span class="align-bottoms">Napstablook</span>
     <% end %>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="ナビゲーションの切替">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ml-auto">
-        <% if logged_in? %>
+      <% if logged_in? %>
+        <ul class="navbar-nav">
           <li class="nav-item font-weight-light">
             <%= link_to '投資信託', user_funds_path(current_user.id), class: 'nav-link' %>
           </li>
@@ -17,8 +17,12 @@
             <%= link_to '設定', user_path(current_user.id), class: 'nav-link' %>
           </li>
           <li class="nav-item font-weight-light">
-            <%= link_to 'ヘルプ', help_path(current_user.id), class: 'nav-link' %>
+            <%= link_to 'ヘルプ', help_path, class: 'nav-link' %>
           </li>
+        </ul>
+      <% end %>
+      <ul class="navbar-nav ml-auto">
+        <% if logged_in? %>
           <li class="nav-item font-weight-light">
             <%= link_to 'ログアウト', session_path(current_user.id), class: 'nav-link', method: 'delete', data: { confirm: '本当にログアウトしますか？' } %>
           </li>
