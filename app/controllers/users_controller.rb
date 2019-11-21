@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
-  before_action :require_login, except: [:new]
+  before_action :require_login, except: [:new, :create]
   def show
-    redirect_to root_path if current_user.id != params[:id].to_i
     @user = User.find(params[:id])
   end
 
@@ -15,7 +14,6 @@ class UsersController < ApplicationController
       log_in(@user)
       redirect_to user_path(@user)
     else
-      byebug
       redirect_to root_path
     end
   end
@@ -32,6 +30,12 @@ class UsersController < ApplicationController
     end
 
     def require_login
-      redirect_to new_session_path if !logged_in?
+      if logged_in?
+        if current_user.id != params[:id].to_i
+          redirect_to root_path
+        end
+      else
+        redirect_to new_session_path
+      end
     end
 end
