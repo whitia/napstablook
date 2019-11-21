@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :require_login
+  before_action :require_login, except: [:new]
   def show
     redirect_to root_path if current_user.id != params[:id].to_i
     @user = User.find(params[:id])
