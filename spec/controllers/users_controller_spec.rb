@@ -63,20 +63,35 @@ RSpec.describe UsersController, type: :controller do
   end
 
   describe '#create' do
-    it 'adds a user' do
-      expect{
-        post :create, params: { user: FactoryBot.attributes_for(:user) }
-      }.to change(User, :count).by(1)
+    before do
+      @user_params = FactoryBot.attributes_for(:user)
+      @invalid_user_params = FactoryBot.attributes_for(:user, :email_empty)
     end
 
-    it 'returns a 302 response' do
-      post :create, params: { user: FactoryBot.attributes_for(:user) }
-      expect(response).to have_http_status '302'
+    context 'with valid attributes' do
+      it 'adds a user' do
+        expect{
+          post :create, params: { user: @user_params }
+        }.to change(User, :count).by(1)
+      end
+  
+      it 'returns a 302 response' do
+        post :create, params: { user: @user_params }
+        expect(response).to have_http_status '302'
+      end
+  
+      it 'redirects to the user page' do
+        post :create, params: { user: @user_params }
+        expect(response).to redirect_to user_path(current_user.id)
+      end
     end
 
-    it 'redirects to the user page' do
-      post :create, params: { user: FactoryBot.attributes_for(:user) }
-      expect(response).to redirect_to user_path(current_user.id)
+    context 'with invalid attributes' do
+      it 'does not add a user' do
+        expect{
+          post :create, params: { user: @invalid_user_params }
+        }.to_not change(User, :count)
+      end
     end
   end
 
@@ -114,7 +129,7 @@ RSpec.describe UsersController, type: :controller do
       it 'doesn\'t delete a user' do
         expect{
           delete :destroy, params: { id: @user.id }
-        }.to change(User, :count).by(0)
+        }.to_not change(User, :count)
       end
 
       it 'returns a 302 response' do
