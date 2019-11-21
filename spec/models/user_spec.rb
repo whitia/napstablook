@@ -51,9 +51,14 @@ RSpec.describe User, type: :model do
       user = FactoryBot.build(:user)
       user.funds << FactoryBot.build(:fund)
       user.save
-      expect{ user.destroy }.to change{ Fund.count }.by(-1)
+      expect{ user.destroy }.to change(Fund, :count).by(-1)
     end
 
-    it 'delete ratios when deleted a user associated it'
+    it 'delete ratios when deleted a user associated it' do
+      user = FactoryBot.build(:user)
+      user.ratios << FactoryBot.build(:ratio)
+      user.save
+      expect{ user.destroy }.to change(Ratio, :count).by(-1)
+    end
   end
 end
