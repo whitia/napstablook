@@ -1,4 +1,5 @@
 class FundsController < ApplicationController
+  before_action :require_login
   skip_before_action :verify_authenticity_token
 
   def index
@@ -182,4 +183,7 @@ class FundsController < ApplicationController
       }
     end
 
+    def require_login
+      redirect_to new_session_path if !logged_in?
+    end
 end

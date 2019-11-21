@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :require_login
   def show
     redirect_to root_path if current_user.id != params[:id].to_i
     @user = User.find(params[:id])
@@ -28,5 +29,9 @@ class UsersController < ApplicationController
   private
     def user_params
       params.require(:user).permit(:email, :password, :password_confirmation)
+    end
+
+    def require_login
+      redirect_to new_session_path if !logged_in?
     end
 end
