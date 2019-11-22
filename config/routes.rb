@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   root 'statics#index'
-  get '/help', to: 'statics#help'
+  get 'help', to: 'statics#help'
+  get 'privacy', to: 'statics#privacy'
   resources :users do
     resources :funds do
       collection { post :import }
