@@ -18,6 +18,9 @@ RSpec.feature "Users", type: :feature do
 
   scenario 'user deletes a user' do
     user = FactoryBot.create(:user)
+    user.funds << FactoryBot.build(:fund)
+    user.ratios << FactoryBot.build(:ratio)
+    user.save
 
     visit root_path
     click_link 'ログイン'
@@ -30,6 +33,6 @@ RSpec.feature "Users", type: :feature do
       page.driver.browser.switch_to.alert.accept
 
       expect(page).to have_content '投資信託管理サービス'
-    }.to change(User, :count).by(-1)
+    }.to change(User, :count).by(-1).and change(Fund, :count).by(-1).and change(Ratio, :count).by(-1)
   end
 end
