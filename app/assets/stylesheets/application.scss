@@ -24,12 +24,13 @@ $navbar-dark-hover-color: darken($orange, 10%);
 
 .jumbotron {
   background-image: url("main.jpg");
-  background-size: auto;
+  background-size: cover;
   background-position: center bottom;
   color: #fff;
-  padding: 150px 0;
+  padding: 35vh 0;
   text-align: center;
   margin-bottom: 0;
+  min-height: 100vh;
   h1 {
     font-size: 32px;
     font-weight: 300;
