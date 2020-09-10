@@ -138,7 +138,7 @@ class FundsController < ApplicationController
                          (after_ratio.present? ? (after_ratio.first.increase.nil? ? 0 : after_ratio.first.increase) : 0)
       
       # Real ratios
-      sum_valuation = Fund.where(user_id: fund.user_id).sum('valuation')
+      sum_valuation = Fund.where(user_id: fund.user_id).sum('valuation') + Ratio.all.sum(:increase)
       before_real = 0 < before_valuation ? (before_valuation.to_f / sum_valuation.to_f * 100).round(3) : 0
       after_real  = 0 < after_valuation ? (after_valuation.to_f / sum_valuation.to_f * 100).round(3) : 0
   
@@ -156,7 +156,7 @@ class FundsController < ApplicationController
         valuation = funds.where(category: category.name).sum('valuation') + \
                     (ratio.present? ? (ratio.first.increase.nil? ? 0 : ratio.first.increase) : 0)
         
-        real[category.name] = 0 < valuation ? (valuation.to_f / funds.sum('valuation').to_f * 100).round(3) : 0
+        real[category.name] = 0 < valuation ? (valuation.to_f / sum_valuation * 100).round(3) : 0
         ideal[category.name] = ratio.exists? ? ratio.first.value : 0.0
       end
   

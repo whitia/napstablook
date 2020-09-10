@@ -201,14 +201,21 @@
         break;
 
       case 'Increase':
+        console.log(data)
         document.querySelector('#評価金額_' + data.before.category).innerText = data.before.valuation;
-        document.querySelector('#実際比率_' + data.before.category).innerText = data.before.real + ' ';
-        document.querySelector('#比率差分_' + data.before.category).innerText = data.before.diff + ' ';
-        if (data.before.diff < 0) {
-          document.querySelector('#比率差分_' + data.before.category).classList.add('text-danger');
-        } else {
-          document.querySelector('#比率差分_' + data.before.category).classList.remove('text-danger');
-        }
+
+        Object.keys(data.ratio.real).forEach(category => {
+          const real_ratio = data.ratio.real[category];
+          const diff_ratio = Math.round((real_ratio - data.ratio.ideal[category]) * 1000) / 1000;
+          
+          document.querySelector('#実際比率_' + category).innerText = real_ratio + ' ';
+          document.querySelector('#比率差分_' + category).innerText = diff_ratio + ' ';
+          if (diff_ratio < 0) {
+            document.querySelector('#比率差分_' + category).classList.add('text-danger');
+          } else {
+            document.querySelector('#比率差分_' + category).classList.remove('text-danger');
+          }
+        });
   
         var real_chart = Chartkick.charts['real-ratio'];
         real_chart.updateData(data.ratio.real);
