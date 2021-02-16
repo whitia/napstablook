@@ -57,6 +57,8 @@
                 <td class="align-middle text-right"><%= fund.valuation.to_s(:delimited) %></td>
                 <td class="align-middle text-right<%= ' text-danger' if fund.difference < 0 %>">
                   <%= fund.difference.to_s(:delimited) %>
+                  <br />
+                  <span class="small">(<%= ((fund.difference/fund.purchase.to_f) * 100).round(2) %>%)</span>
                 </td>
                 <td class="align-middle">
                   <%= select_tag 'category', options_for_select(@categories, { :selected => fund.category }),
@@ -77,6 +79,8 @@
               <td class="text-right"><%= @sum['評価金額'].to_s(:delimited) %></td>
               <td class="text-right<%= ' text-danger' if @sum['評価損益'] < 0 %>">
                 <%= @sum['評価損益'].to_s(:delimited) %>
+                <br />
+                <span class="small">(<%= ((@sum['評価損益']/@sum['買付金額'].to_f) * 100).round(2) %>%)</span>
               </td>
               <td></td>
               <td></td>
