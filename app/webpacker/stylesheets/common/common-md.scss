@@ -1,0 +1,99 @@
+@media (min-width: 992px) {
+  @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --color-1: #0b3e75;
+    --color-2: #1263bb;
+    --color-3: #c4790a;
+    --color-4: #f1af4c;
+  }
+
+  html, body {
+    color: #000;
+    font-family: 'Quicksand', sans-serif;
+    background-color: #fff;
+  }
+
+  a, a:hover {
+    color: var(--color-4);
+    text-decoration: none;
+  }
+
+  h1, h2, h3 {
+    display: inline;
+    color: transparent;
+    background-image: linear-gradient(to bottom, var(--color-1) 25%, var(--color-2));
+    background-clip: text;
+  }
+  h1 {
+    font-size: 4.75rem;
+    font-weight: 600;
+    & ~ span {
+      display: block;
+      margin-top: 4px;
+      color: #333;
+      font-size: 1.5rem;
+    }
+  }
+  h2 {
+    font-size: 2.75rem;
+    font-weight: 600;
+  }
+  h3 {
+    font-size: 1.75rem;
+    font-weight: 600;
+  }
+
+  header,
+  footer,
+  section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    .container {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      max-width: 1440px;
+      padding: 0 32px;
+      .content {
+        .message {
+          margin: 32px 0;
+          color: #999;
+          line-height: 1.5rem;
+        }
+      }
+    }
+  }
+
+  .button-1 {
+    display: inline-block;
+    width: 120px;
+    padding: 16px;
+    color: #fff;
+    text-align: center;
+    background-image: linear-gradient(to right, var(--color-3), var(--color-4));
+    border-radius: 32px;
+    transition: .25s;
+    &:hover {
+      filter: drop-shadow(4px 4px 4px rgba(#000,.25));
+    }
+  }
+  .button-2 {
+    display: inline-block;
+    width: 120px;
+    margin-right: 32px;
+    padding: 16px;
+    color: var(--color-4);
+    text-align: center;
+    background-color: #fff;
+    border: 2px solid var(--color-4);
+    border-radius: 32px;
+    transition: .25s;
+    &:hover {
+      filter: drop-shadow(4px 4px 4px rgba(#000,.25));
+    }
+  }
+}

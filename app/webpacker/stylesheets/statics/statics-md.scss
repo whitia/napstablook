@@ -1,0 +1,82 @@
+@media (min-width: 992px) {
+  main {
+    #home {
+      height: 100vh;
+      background-image: url('../images/cover.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      .container {
+        .content {
+          width: 480px;
+          .message {
+            margin: 64px 0;
+          }
+        }
+      }
+    }
+    #how-it-works {
+      padding: 160px 0;
+      .container {
+        justify-content: center;
+        .content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          .message {
+            width: 480px;
+            text-align: center;
+          }
+          .screen-shot {
+            margin-top: 32px;
+            border-radius: 16px;
+            filter: drop-shadow(0 0 24px #f5f5f5);
+          }
+        }
+      }
+    }
+    #features {
+      flex-wrap: wrap;
+      padding: 160px 0;
+      background-color: #f7fafc;
+      .container {
+        width: 100%;
+        max-width: 1180px;
+        background-repeat: no-repeat;
+        &.organize {
+          background-image: url('../images/organize.png');
+          background-position: right center;
+          .content {
+            flex-basis: 50%;
+            padding: 200px 0;
+          }
+        }
+        &.rebalance {
+          justify-content: flex-end;
+          background-image: url('../images/pie-chart.png');
+          background-position: left center;
+          .content {
+            flex-basis: 50%;
+            padding: 200px 0;
+          }
+        }
+      }
+    }
+    #privacy,
+    #terms {
+      padding: 160px 0;
+      .container {
+        width: 100%;
+        max-width: 1180px;
+        .content {
+          p, ul {
+            margin: 32px 0;
+            color: #999;
+            line-height: 1.5rem;
+            text-align: justify;
+          }
+          ul { margin-left: 24px; }
+        }
+      }
+    }
+  }
+}

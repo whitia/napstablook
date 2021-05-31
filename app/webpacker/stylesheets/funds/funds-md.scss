@@ -1,0 +1,121 @@
+@media (min-width: 992px) {
+  main {
+    #funds {
+      padding: 160px 0;
+      .container {
+        flex-wrap: wrap;
+        .content {
+          flex-basis: 100%;
+          margin-bottom: 80px;
+          p {
+            margin: 8px 0 32px;
+            color: #999;
+            line-height: 1.5rem;
+            text-align: justify;
+          }
+          form {
+            .form-group {
+              &.form-import {
+                transition: .25s;
+                &:hover {
+                  filter: drop-shadow(4px 4px 4px rgba(#000,.25));
+                }
+                #file_name {
+                  cursor: pointer;
+                  width: calc(100% - 200px);
+                  padding: 16px;
+                  outline: none;
+                  font-size: 1.5rem;
+                  border: 2px solid var(--color-1);
+                  border-radius: 8px 0 0 8px;
+                  &::placeholder {
+                    color: #dfdfdf;
+                    font-family: 'Quicksand', sans-serif;
+                  }
+                  &:-ms-input-placeholder {
+                    color: #dfdfdf;
+                    font-family: 'Quicksand', sans-serif;
+                  }
+                  &::-ms-input-placeholder {
+                    color: #dfdfdf;
+                    font-family: 'Quicksand', sans-serif;
+                  }
+                }
+                #submit {
+                  cursor: pointer;
+                  display: inline-block;
+                  width: 160px;
+                  height: 64px;
+                  color: #fff;
+                  font-size: 1.5rem;
+                  font-family: 'Quicksand', sans-serif;
+                  line-height: 2rem;
+                  background-image: linear-gradient(to right, var(--color-1), var(--color-2));
+                  border: 0;
+                  border-radius: 0 8px 8px 0;
+                  &[disabled] { filter: saturate(25%); }
+                }
+              }
+            }
+          }
+          .charts {
+            display: flex;
+            justify-content: space-between;
+            .list-of-invest { flex-basis: 100%; }
+            .list-of-ratio { flex-basis: 75%; }
+            .list-of-invest,
+            .list-of-ratio {
+              thead {
+                tr {
+                  border-bottom: 1px solid #dfdfdf;
+                  th {
+                    padding: 16px 8px;
+                    font-size: .8rem;
+                    text-align: left;
+                  }
+                }
+              }
+              tbody {
+                tr {
+                  transition: .25s;
+                  &:hover { background-color: #f8f8f8; }
+                  &:not(:last-of-type) {
+                    border-bottom: 1px solid #dfdfdf;
+                  }
+                  td {
+                    padding: 16px 8px;
+                    font-size: .8rem;
+                    line-height: 1.1rem;
+                    vertical-align: middle;
+                    &.text-right { text-align: right; }
+                    &.text-red { color: tomato; }
+                    .percent { font-size: .6rem; }
+                    #category,
+                    #increase,
+                    input[id*="Ideal"] {
+                      width: 100%;
+                      padding: 8px;
+                      outline: none;
+                      border: 1px solid #dfdfdf;
+                      border-radius: 4px;
+                    }
+                    #increase,
+                    input[id*="Ideal"] { text-align: right; }
+                  }
+                }
+              }
+            }
+            .pies {
+              flex-basis: 25%;
+              padding: 16px 0 0 32px;
+              font-size: .8rem;
+              font-weight: 600;
+              line-height: 1.1rem;
+              div:first-of-type { margin-bottom: 40px;}
+            }
+          }
+        }
+      }
+    }
+  }
+}

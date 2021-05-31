@@ -1,0 +1,20 @@
+@media (min-width: 992px) {
+  footer {
+    padding: 64px 0;
+    background-color: var(--color-1);
+    .container {
+      justify-content: space-between;
+      .nav {
+        display: flex;
+        list-style-type: none;
+        li {
+          &:not(:last-of-type) { margin-right: 32px; }
+        }
+      }
+      .copy {
+        color: #fff;
+      }
+      a { color: #fff; }
+    }
+  }
+}

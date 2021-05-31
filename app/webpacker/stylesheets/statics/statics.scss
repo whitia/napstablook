@@ -1,0 +1,89 @@
+@media (max-width: 991px) {
+  main {
+    #home {
+      height: 640px;
+      background-image: url('../images/cover.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: right calc(25% - 320px) center;
+      .container {
+        .content {
+          width: 100%;
+          .message {
+            width: 75%;
+            margin: 64px 0;
+          }
+        }
+      }
+    }
+    #how-it-works {
+      padding: 160px 0;
+      .container {
+        justify-content: center;
+        .content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          .message {
+            width: 100%;
+            text-align: center;
+          }
+          .screen-shot {
+            width: 100%;
+            margin-top: 32px;
+            border-radius: 16px;
+            filter: drop-shadow(0 0 24px #f5f5f5);
+          }
+        }
+      }
+    }
+    #features {
+      flex-wrap: wrap;
+      padding: 160px 0;
+      background-color: #f7fafc;
+      .container {
+        align-items: flex-start;
+        width: 100%;
+        max-width: 1180px;
+        background-repeat: no-repeat;
+        &.organize {
+          height: 540px;
+          margin-bottom: 64px;
+          background-image: url('../images/organize.png');
+          background-position: center bottom;
+          background-size: 90%;
+          .content {
+            flex-basis: 100%;
+          }
+        }
+        &.rebalance {
+          height: 540px;
+          justify-content: flex-end;
+          background-image: url('../images/pie-chart.png');
+          background-position: center bottom;
+          background-size: 90%;
+          .content {
+            flex-basis: 100%;
+          }
+        }
+      }
+    }
+    #privacy,
+    #terms {
+      padding: 160px 0;
+      .container {
+        width: 100%;
+        max-width: 1180px;
+        .content {
+          p, ul {
+            margin: 32px 0;
+            color: #999;
+            line-height: 1.5rem;
+            text-align: justify;
+          }
+          ul { margin-left: 24px; }
+        }
+      }
+    }
+  }
+}

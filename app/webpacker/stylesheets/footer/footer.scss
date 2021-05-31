@@ -1,0 +1,21 @@
+@media (max-width: 991px) {
+  footer {
+    padding: 32px 0;
+    background-color: var(--color-1);
+    .container {
+      justify-content: space-between;
+      font-size: .75rem;
+      .nav {
+        display: flex;
+        list-style-type: none;
+        li {
+          &:not(:last-of-type) { margin-right: 16px; }
+        }
+      }
+      .copy {
+        color: #fff;
+      }
+      a { color: #fff; }
+    }
+  }
+}

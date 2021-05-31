@@ -1,0 +1,13 @@
+@media (min-width: 992px) {
+  header {
+    position: absolute;
+    height: 80px;
+    .container {
+      justify-content: space-between;
+      .brand {
+        width: 32px;
+        height: 32px;
+      }
+    }
+  }
+}
