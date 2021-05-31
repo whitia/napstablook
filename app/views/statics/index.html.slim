@@ -1,0 +1,39 @@
+section#home
+  .container
+    .content
+      h1 Napstablook
+      span Investment trust management service
+      .message
+        | You can manage own investment trust easily, also and simulate rebalancing.
+      - if logged_in?
+        .message
+          | You sign in as 
+          = current_user.email
+          |  now.
+          =< link_to 'Start', funds_path
+          | , or 
+          = link_to 'sign out', signout_path, method: 'delete', data: { confirm: 'Really?' }
+          | .
+      - else
+        = link_to signin_path do
+          .button-2 Sign in
+        = link_to signup_path do
+          .button-1 Sign up now!
+section#how-it-works
+  .container
+    .content
+      h2 What is it?
+      .message
+        | Napstabook is the place that has solutions to all your needs. This will give your more time to reach your true goals. Help you to create something better. Let's getting start now!
+      = image_pack_tag 'screen_shot.png', class: 'screen-shot'
+section#features
+  .container.organize
+    .content
+      h2 Organize
+      .message
+        | You can organize own investment trust with simple operation. Tell me what you need and I just solve fastly.
+  .container.rebalance
+    .content
+      h2 Simulation
+      .message
+        | Can be simulated before actual rebalancing investment trust. I want to understand you, and deliver features that are right for you.

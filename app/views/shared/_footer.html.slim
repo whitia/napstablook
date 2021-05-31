@@ -1,0 +1,9 @@
+footer
+  .container
+    ul.nav
+      li = link_to 'Terms of Service', terms_path
+      li = link_to 'Privacy Policy', privacy_path
+    .copy
+      | &copy;
+      =< "2019-#{Date.today.strftime('%Y')}"
+      =< link_to 'AUTOVICE', 'https://autovice.jp'

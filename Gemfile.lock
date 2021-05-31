@@ -60,16 +60,10 @@ GEM
       zeitwerk (~> 2.2, >= 2.2.2)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
-    autoprefixer-rails (9.7.6)
-      execjs
     bcrypt (3.1.13)
     bindex (0.8.1)
     bootsnap (1.4.6)
       msgpack (~> 1.0)
-    bootstrap (4.5.0)
-      autoprefixer-rails (>= 9.1.0)
-      popper_js (>= 1.14.3, < 2)
-      sassc-rails (>= 2.0.0)
     builder (3.2.4)
     byebug (11.1.3)
     capybara (3.32.2)
@@ -111,10 +105,6 @@ GEM
     io-wait (0.1.0)
     jbuilder (2.10.0)
       activesupport (>= 5.0.0)
-    jquery-rails (4.4.0)
-      rails-dom-testing (>= 1, < 3)
-      railties (>= 4.2.0)
-      thor (>= 0.14, < 2.0)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -142,7 +132,6 @@ GEM
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     pg (1.2.3)
-    popper_js (1.16.0)
     public_suffix (4.0.5)
     puma (3.12.6)
     racc (1.5.2)
@@ -182,10 +171,6 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     regexp_parser (1.7.0)
-    rename (1.0.6)
-      activesupport
-      rails (>= 3.0.0)
-      thor (>= 0.19.1)
     rspec-core (3.9.2)
       rspec-support (~> 3.9.3)
     rspec-expectations (3.9.2)
@@ -216,17 +201,16 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
-    sassc (2.4.0)
-      ffi (~> 1.9)
-    sassc-rails (2.1.2)
-      railties (>= 4.0.0)
-      sassc (>= 2.0)
-      sprockets (> 3.0)
-      sprockets-rails
-      tilt
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
+    slim (4.1.0)
+      temple (>= 0.7.6, < 0.9)
+      tilt (>= 2.0.6, < 2.1)
+    slim-rails (3.2.0)
+      actionpack (>= 3.1)
+      railties (>= 3.1)
+      slim (>= 3.0, < 5.0)
     spring (2.1.0)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
@@ -241,6 +225,7 @@ GEM
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
     sqlite3 (1.4.2)
+    temple (0.8.2)
     thor (1.1.0)
     thread_safe (0.3.6)
     tilt (2.0.10)
@@ -278,9 +263,8 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-import
-  bcrypt
+  bcrypt (~> 3.1.7)
   bootsnap (>= 1.1.0)
-  bootstrap
   byebug
   capybara (>= 2.15)
   chartable
@@ -288,15 +272,14 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   factory_bot_rails
   jbuilder (~> 2.5)
-  jquery-rails
   listen (>= 3.0.5, < 3.2)
   pg
   puma (~> 3.11)
   rails (~> 6.0.3, >= 6.0.3.7)
-  rename
   rspec-rails
   sass-rails (~> 5.0)
   selenium-webdriver
+  slim-rails
   spring
   spring-commands-rspec
   spring-watcher-listen (~> 2.0.0)
