@@ -1,0 +1,11 @@
+= form_with url: '/signin', local: false, html: { name: :signin } do |form|
+  .error-messages = flash.now[:danger]
+  .form-group.form-email
+    = form.label :email
+    = form.email_field :email, placeholder: 'info@example.com'
+  .form-group.form-password
+    = form.label :password
+    = form.password_field :password, placeholder: '**********'
+  .form-group.form-submit
+    = link_to 'javascript:document.signin.submit();' do
+      .button-1 Sign in

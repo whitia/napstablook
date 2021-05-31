@@ -12,7 +12,7 @@ section#home
           |  now.
           =< link_to 'Start', funds_path
           | , or 
-          = link_to 'sign out', signout_path, method: 'delete', data: { confirm: 'Really?' }
+          = link_to 'sign out', signout_path, method: :delete, data: { confirm: 'Really?' }
           | .
       - else
         = link_to signin_path do

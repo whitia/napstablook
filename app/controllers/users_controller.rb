@@ -1,8 +1,5 @@
 class UsersController < ApplicationController
-  before_action :require_login, except: [:new, :create]
-  def show
-    @user = User.find(params[:id])
-  end
+  before_action :set_user, only: %i[ show edit update destroy ]
 
   def new
     @user = User.new
@@ -10,32 +7,21 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    if @user.save
-      log_in(@user)
-      redirect_to user_path(@user)
-    else
-      redirect_to root_path
-    end
-  end
 
-  def destroy
-    log_out
-    User.find(params[:id]).destroy
-    redirect_to root_path
+    if @user.save
+      log_in @user
+      redirect_to root_path
+    else
+      render :new
+    end
   end
 
   private
-    def user_params
-      params.require(:user).permit(:email, :password, :password_confirmation)
+    def set_user
+      @user = User.find(params[:id])
     end
 
-    def require_login
-      if logged_in?
-        if current_user.id != params[:id].to_i
-          redirect_to root_path
-        end
-      else
-        redirect_to new_session_path
-      end
+    def user_params
+      params.require(:user).permit(:email, :password)
     end
 end

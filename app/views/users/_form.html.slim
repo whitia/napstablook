@@ -1,0 +1,16 @@
+= form_with model: @user, url: '/signup', local: false, html: { name: :signup } do |form|
+  .form-group.form-email
+    = form.label :email
+    = render partial: 'form_errors', locals: { target: 'Email' }
+    = form.email_field :email, placeholder: 'info@example.com'
+  .form-group.form-password
+    = form.label :password
+    = render partial: 'form_errors', locals: { target: 'Password' }
+    = form.password_field :password, placeholder: '**********'
+  .form-group.form-password-confirm
+    = form.label :password_confirm
+    = render partial: 'form_errors', locals: { target: 'Password confirm' }
+    = form.password_field :password, placeholder: '**********'
+  .form-group.form-submit
+    = link_to 'javascript:document.signup.submit();' do
+      .button-1 Create account

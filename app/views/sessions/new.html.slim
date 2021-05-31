@@ -1,0 +1,9 @@
+section#signin
+  .container
+    .content
+      h2 Sign in
+      .message
+        | If you don't still have an account, please 
+        = link_to 'sign up', signup_path
+        | .
+      = render 'form'

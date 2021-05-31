@@ -1,0 +1,4 @@
+- unless @user.errors.full_messages.nil?
+  ul.error-messages
+    - @user.errors.full_messages.select { |value| value.include?(target) }.each do |message|
+      li = message
