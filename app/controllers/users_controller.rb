@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
     if @user.save
       log_in @user
-      redirect_to root_path
+      redirect_to funds_path
     else
       render :new
     end

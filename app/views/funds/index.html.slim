@@ -1,0 +1,97 @@
+section#funds
+  .container
+    .content
+      h3 1. Import file
+      p Choose file to import containing investment trust you own.
+      = form_with url: funds_import_path, local: true, multipart: true do |form|
+        .form-group.form-import
+          = form.text_field :file_name, placeholder: 'Click here to choose file to import',
+                                        onclick: 'javascript:document.querySelector("#file").click();'
+          = form.file_field :file, style: 'display: none;'
+          = form.submit :Import, id: 'submit', data: { confirm: 'Really?', 'disable-with': 'Importing' }
+    .content
+      h3 2. List of investment trust
+      p Set class of investment trust from dropdown list.
+      - if @funds.present?
+        .charts
+          table.list-of-invest
+            thead
+              tr
+                th[width="12%"] Type
+                th[width="60%"] Name
+                th[width="7%"] Purchase
+                th[width="7%"] Valuation
+                th[width="7%"] Difference
+                th[width="7%"] Class
+            tbody
+              - @funds.each do |fund|
+                tr
+                  td = fund.account
+                  td = fund.name
+                  td.text-right = fund.purchase.to_s(:delimited)
+                  td.text-right = fund.valuation.to_s(:delimited)
+                  td.text-right[class="#{'text-red' if fund.difference < 0}"]
+                    = fund.difference.to_s(:delimited)
+                    .percent = "(#{((fund.difference/fund.purchase.to_f) * 100).round(2)}%)"
+                  td
+                    = select_tag :category, options_for_select(@categories, { selected: fund.category }),
+                                            include_blank: true,
+                                            data: { remote: true,
+                                                    method: :post,
+                                                    url: funds_set_category_path,
+                                                    params: 'id=' + fund.id.to_s,
+                                                    type: :json }
+              tr
+                td
+                td
+                td.text-right = @sum[:purchase].to_s(:delimited)
+                td.text-right = @sum[:valuation].to_s(:delimited)
+                td.text-right[class="#{'text-red' if @sum[:difference] < 0}"]
+                  = @sum[:difference].to_s(:delimited)
+                  .percent = "(#{((@sum[:difference]/@sum[:purchase].to_f) * 100).round(2)}%)"
+                td
+    .content
+      h3 List of ratio
+      p Set value of ideal, and comparison real and ideal with updated table chart and pie charts. Set value of capital increase, and also be able to simulate rebalancing of overall ratio.
+      - if @funds.present?
+        .charts
+          table.list-of-ratio
+            thead
+              tr
+                th[width="10%"] Class
+                th[width="15%"] Purchase
+                th[width="15%"] Valuation
+                th[width="15%"] Increase
+                th[width="15%"] Real ratio
+                th[width="15%"] Ideal ratio
+                th[width="15%"] Difference
+            tbody
+              - @ratios.each do |ratio|
+                tr
+                  td = ratio[0]
+                  td.text-right[id="#{ratio[0]}_Purchase"] = ratio[1][:purchase].to_s(:delimited)
+                  td.text-right[id="#{ratio[0]}_Valuation"] = ratio[1][:valuation].to_s(:delimited)
+                  td
+                    = number_field_tag :increase, 0, value: ratio[1][:increase],
+                                                    data: { remote: true,
+                                                            method: :post,
+                                                            url: funds_set_increase_path,
+                                                            params: 'category=' + ratio[0],
+                                                            type: :json }
+                  td.text-right[id="#{ratio[0]}_Real"] = "#{ratio[1][:real]}"
+                  td
+                    = number_field_tag :ideal, 0, id: "#{ratio[0]}_Ideal", value: ratio[1][:ideal], step: 0.1,
+                                                  data: { remote: true,
+                                                          method: :post,
+                                                          url: funds_set_ideal_path,
+                                                          params: 'category=' + ratio[0],
+                                                          type: :json }
+                  td.text-right[id="#{ratio[0]}_Difference", class="#{'text-red' if ratio[1][:difference] < 0}"]
+                    = "#{ratio[1][:difference]}"
+          .pies
+            div
+              h4 Real pie chart
+              = pie_chart @real, id: 'real-pie-chart', colors: @colors, legend: :bottom, width: '100%', suffix: '%'
+            div
+              h4 Ideal pie chart
+              = pie_chart @ideal, id: 'ideal-pie-chart', colors: @colors, legend: :bottom, width: '100%', suffix: '%'
