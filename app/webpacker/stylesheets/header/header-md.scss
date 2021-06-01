@@ -1,6 +1,7 @@
 @media (min-width: 992px) {
   header {
     position: absolute;
+    z-index: 32;
     height: 80px;
     .container {
       justify-content: space-between;
