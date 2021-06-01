@@ -53,7 +53,7 @@ class FundsController < ApplicationController
 
   def import
     funds = Array.new
-    CSV.foreach(params[:file].path, headers: true, encoding: 'Shift_JIS:UTF-8') do |row|
+    CSV.foreach(params[:file].path, headers: true, encoding: 'Shift_JIS:UTF-8', force_quotes: true) do |row|
       funds << Fund.new(name: row['ファンド名'],
                         account: row['口座種別'],
                         purchase: row['買付金額'],

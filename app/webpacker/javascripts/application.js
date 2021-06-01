@@ -47,16 +47,16 @@ const updateRatios = () => {
           } else {
             document.querySelector('#' + before.category + '_Difference').classList.remove('text-red');
           }
-        }
-
-        document.querySelector('#' + after.category + '_Purchase').innerText = after.purchase;
-        document.querySelector('#' + after.category + '_Valuation').innerText = after.valuation;
-        document.querySelector('#' + after.category + '_Real').innerText = after.real;
-        document.querySelector('#' + after.category + '_Difference').innerText = after.difference;
-        if (after.difference < 0) {
-          document.querySelector('#' + after.category + '_Difference').classList.add('text-red');
         } else {
-          document.querySelector('#' + after.category + '_Difference').classList.remove('text-red');
+          document.querySelector('#' + after.category + '_Purchase').innerText = after.purchase;
+          document.querySelector('#' + after.category + '_Valuation').innerText = after.valuation;
+          document.querySelector('#' + after.category + '_Real').innerText = after.real;
+          document.querySelector('#' + after.category + '_Difference').innerText = after.difference;
+          if (after.difference < 0) {
+            document.querySelector('#' + after.category + '_Difference').classList.add('text-red');
+          } else {
+            document.querySelector('#' + after.category + '_Difference').classList.remove('text-red');
+          }
         }
 
         realPieChart.updateData(data.ratio.real);
