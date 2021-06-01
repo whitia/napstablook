@@ -8,7 +8,8 @@ class SessionsController < ApplicationController
       log_in user
       redirect_to funds_path
     else
-      flash.now[:danger] = 'Wrong parameters email or password'
+      @email = params[:email]
+      flash.now[:danger] = 'Wrong email or password'
       render :new
     end
   end

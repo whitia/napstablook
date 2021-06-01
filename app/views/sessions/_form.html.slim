@@ -2,7 +2,7 @@
   .error-messages = flash.now[:danger]
   .form-group.form-email
     = form.label :email
-    = form.email_field :email, placeholder: 'info@example.com'
+    = form.email_field :email, value: @email, placeholder: 'info@example.com'
   .form-group.form-password
     = form.label :password
     = form.password_field :password, placeholder: '**********'

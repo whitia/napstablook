@@ -65,7 +65,7 @@
             .list-of-invest,
             .list-of-ratio {
               flex-basis: 100%;
-              width: calc(100vw - 8px * 2);
+              width: calc(100vw - 16px * 2);
               display: block;
               overflow-x: scroll;
               white-space: nowrap;
@@ -95,17 +95,15 @@
                     &.text-right { text-align: right; }
                     &.text-red { color: tomato; }
                     .percent { font-size: .6rem; }
-                    #category,
-                    #increase,
-                    input[id*="Ideal"] {
+                    #category, #increase, input[id*="Ideal"] {
                       width: 100%;
                       padding: 8px;
                       outline: none;
                       border: 1px solid #dfdfdf;
                       border-radius: 4px;
                     }
-                    #increase,
-                    input[id*="Ideal"] { text-align: right; }
+                    #category { width: 64px; }
+                    #increase, input[id*="Ideal"] { text-align: right; }
                   }
                 }
               }
