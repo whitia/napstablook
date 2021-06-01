@@ -47,21 +47,21 @@
         max-width: 1180px;
         background-repeat: no-repeat;
         &.organize {
-          height: 540px;
+          height: 100vw;
           margin-bottom: 64px;
           background-image: url('../images/organize.png');
           background-position: center bottom;
-          background-size: 90%;
+          background-size: 75vw;
           .content {
             flex-basis: 100%;
           }
         }
         &.rebalance {
-          height: 540px;
+          height: 100vw;
           justify-content: flex-end;
           background-image: url('../images/pie-chart.png');
           background-position: center bottom;
-          background-size: 90%;
+          background-size: 75vw;
           .content {
             flex-basis: 100%;
           }
