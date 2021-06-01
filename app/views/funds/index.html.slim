@@ -1,11 +1,12 @@
 - set_meta_tags noindex: true, title: 'Manage investment trust'
 
 section#funds
+  #overlay Drop CSV file here
   .container
     .content
       h3 1. Import file
-      p Choose file to import containing investment trust you own.
-      = form_with url: funds_import_path, local: true, multipart: true do |form|
+      p Import CSV file containing investment trust you own. Click bellow textbox and choose CSV file, or drag'n'drop CSV file on the this window.
+      = form_with url: funds_import_path, local: true, multipart: true, id: 'form-import' do |form|
         .form-group.form-import
           = form.text_field :file_name, placeholder: 'Click here to choose file to import',
                                         onclick: 'javascript:document.querySelector("#file").click();'
@@ -53,7 +54,7 @@ section#funds
                   .percent = "(#{((@sum[:difference]/@sum[:purchase].to_f) * 100).round(2)}%)"
                 td
     .content
-      h3 List of ratio
+      h3 3. List of ratio
       p Set value of ideal, and comparison real and ideal with updated table chart and pie charts. Set value of capital increase, and also be able to simulate rebalancing of overall ratio.
       - if @funds.present?
         .charts

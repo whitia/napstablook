@@ -100,10 +100,58 @@ const updateRatios = () => {
   })
 }
 
+function preventDefaults (e) {
+  e.preventDefault()
+  e.stopPropagation()
+}
+
+function enabled (e) {
+  overlay.style.filter = 'opacity(1)';
+  overlay.style.visibility = 'visible';
+}
+
+function disabled (e) {
+  overlay.style.filter = 'opacity(0)';
+  overlay.style.visibility = 'hidden';
+}
+
+function handleDrop (e) {
+  overlay.textContent = 'The file is being prepared for importing'
+  let formData = new FormData();
+  formData.append('file', e.dataTransfer.files[0]);
+
+  let xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      console.warn(xhr.responseText);
+    }
+    location.reload();
+  }
+  xhr.open('POST', '/funds/import', false);
+  xhr.send(formData);
+}
+
+/**
+ * @function handleDragDrop
+ * @description Drag'n'drop CSV file on window to import
+ */
+const handleDragDrop = () => {
+  const overlay = document.querySelector('#overlay');
+
+  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    overlay.addEventListener(eventName, preventDefaults, false);
+  });  
+
+  window.addEventListener('dragenter', { handleEvent: enabled, target: overlay });
+  overlay.addEventListener('dragleave', { handleEvent: disabled, target: overlay });
+  overlay.addEventListener('drop', { handleEvent: handleDrop, target: overlay });
+}
+
 document.addEventListener('turbolinks:load', event => {
   checkSelectFile();
   document.querySelector('#file').addEventListener('change', event => {
     setFileName(event.target);
   });
   updateRatios();
+  handleDragDrop();
 });

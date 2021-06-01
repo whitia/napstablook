@@ -1,5 +1,6 @@
 class FundsController < ApplicationController
   before_action :require_login
+  skip_before_action :verify_authenticity_token
 
   def index
     @funds = Fund.where(user_id: current_user.id).order('account desc, name desc')
@@ -76,6 +77,7 @@ class FundsController < ApplicationController
     Fund.where(user_id: current_user.id).destroy_all
     # Bulk insert with activerecord-import
     Fund.import(funds)
+    @funds = Fund.where(user_id: current_user.id).order('account desc, name desc')
 
     redirect_to funds_path
   end
