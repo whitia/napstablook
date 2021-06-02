@@ -24,7 +24,7 @@ const checkFile = () => {
 
     // If a file is selected
     if (!file.value) {
-      alert('Nothing a selected file');
+      setErrorMessage('Nothing a selected file');
       e.preventDefault();
       e.stopPropagation();
       return false;
@@ -33,7 +33,7 @@ const checkFile = () => {
     // If a file type is csv
     const ext = getExtension(file.value);
     if (ext.toLowerCase() != 'csv') {
-      alert('Invalid file type of a selected');
+      setErrorMessage('Invalid file type of a selected');
       e.preventDefault();
       e.stopPropagation();
       return false;
@@ -136,12 +136,24 @@ function disabled (e) {
   overlay.style.visibility = 'hidden';
 }
 
+function setErrorMessage (message) {
+  let messages = document.createElement('p');
+  messages.id = 'import-error';
+  messages.textContent = message;
+
+  const importFile = document.querySelector('#import-file');
+  if (importFile.lastChild) {
+    importFile.lastChild.remove();
+  }
+  importFile.appendChild(messages);
+}
+
 function handleDrop (e) {
   // If a file type is csv
   const ext = getExtension(e.dataTransfer.files[0].name);
   if (ext.toLowerCase() != 'csv') {
-    alert('Invalid file type of a selected');
     disabled();
+    setErrorMessage('Invalid file type of a selected');
     e.preventDefault();
     e.stopPropagation();
     return false;
@@ -161,16 +173,7 @@ function handleDrop (e) {
           break;
         case 500:
           disabled();
-          
-          let messages = document.createElement('p');
-          messages.id = 'import-error';
-          messages.textContent = JSON.parse(xhr.responseText)['alert'];
-
-          const importFile = document.querySelector('#import-file');
-          if (importFile.lastChild) {
-            importFile.lastChild.remove();
-          }
-          importFile.appendChild(messages);
+          setErrorMessage(JSON.parse(xhr.responseText)['alert']);
       }
     }
   }
