@@ -26,7 +26,7 @@
           flex-basis: 100%;
           margin-bottom: 80px;
           p {
-            margin: 8px 0 32px;
+            margin: 8px 0;
             color: #999;
             line-height: 1.5rem;
             text-align: justify;
@@ -75,6 +75,11 @@
                 }
               }
             }
+          }
+          #import-error {
+            color: tomato;
+            font-size: .8rem;
+            font-weight: 600;
           }
           .charts {
             display: flex;

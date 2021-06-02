@@ -54,32 +54,41 @@ class FundsController < ApplicationController
 
   def import
     funds = Array.new
-    CSV.foreach(params[:file].path, headers: true, encoding: 'Shift_JIS:UTF-8', force_quotes: true) do |row|
-      funds << Fund.new(name: row['ファンド名'],
-                        account: row['口座種別'],
-                        purchase: row['買付金額'],
-                        valuation: row['評価金額'],
-                        difference: row['評価金額'].to_i - row['買付金額'].to_i,
-                        category: nil,
-                        user_id: current_user.id)
-    end
-    # Update new category to current it if exists fund
-    funds.each do |row|
-      fund = Fund.where(user_id: current_user.id)
-                 .where(name: row.name)
-                 .where(account: row.account)
-                 .where.not(category: nil)
-      if fund.exists?
-        row.category = fund.first.category
+    begin
+      CSV.foreach(params[:file].path, headers: true, encoding: 'Shift_JIS:UTF-8', force_quotes: true) do |row|
+        funds << Fund.new(name: row['ファンド名'],
+                          account: row['口座種別'],
+                          purchase: row['買付金額'],
+                          valuation: row['評価金額'],
+                          difference: row['評価金額'].to_i - row['買付金額'].to_i,
+                          category: nil,
+                          user_id: current_user.id)
+      end
+      # Update new category to current it if exists fund
+      funds.each do |row|
+        fund = Fund.where(user_id: current_user.id)
+                  .where(name: row.name)
+                  .where(account: row.account)
+                  .where.not(category: nil)
+        if fund.exists?
+          row.category = fund.first.category
+        end
+      end
+      # Delete all columns of current user
+      Fund.where(user_id: current_user.id).destroy_all
+      # Bulk insert with activerecord-import
+      Fund.import(funds)
+
+      @funds = Fund.where(user_id: current_user.id).order('account desc, name desc')
+      redirect_to funds_path
+    rescue => e
+      if request.xhr?
+        render json: { alert: "An error occurred: #{e.class} #{e}" }, status: 500
+      else
+        flash[:danger] = "An error occurred: #{e.class} #{e}"
+        redirect_to funds_path
       end
     end
-    # Delete all columns of current user
-    Fund.where(user_id: current_user.id).destroy_all
-    # Bulk insert with activerecord-import
-    Fund.import(funds)
-    @funds = Fund.where(user_id: current_user.id).order('account desc, name desc')
-
-    redirect_to funds_path
   end
 
   def set_category

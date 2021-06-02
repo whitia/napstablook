@@ -1,26 +1,47 @@
 /**
- * @function checkSelectFile
- * @description Check if import file is selected
- */
-const checkSelectFile = () => {
-  document.querySelector('#submit').addEventListener('click', event => {
-    const fileName = document.querySelector('#file_name');
-    if (fileName.value == '') {
-      alert('Nothing selected a file.');
-      fileName.focus();
-      event.preventDefault();
-      event.stopPropagation();
-    }
-  });
-}
-
-/**
  * @function setFileName
  * @param {*} element File field
  * @description Set selected import file to value of textbox field
  */
-const setFileName = element => {
-  document.querySelector('#file_name').value = element.files[0].name;
+ const setFileName = () => {
+  document.querySelector('#file').addEventListener('change', e => {
+    document.querySelector('#file_name').value = e.target.files[0].name;
+  });
+}
+
+function getExtension(filename) {
+  var parts = filename.split('.');
+  return parts[parts.length - 1];
+}
+
+/**
+ * @function checkFile
+ * @description Check if a file is selected and it type is csv
+ */
+const checkFile = () => {
+  document.querySelector('#submit').addEventListener('click', e => {
+    const file = document.querySelector('#file');
+
+    // If a file is selected
+    if (!file.value) {
+      alert('Nothing a selected file');
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+    
+    // If a file type is csv
+    const ext = getExtension(file.value);
+    if (ext.toLowerCase() != 'csv') {
+      alert('Invalid file type of a selected');
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+
+    overlay.textContent = 'Now importing the file...';
+    enabled();
+  });
 }
 
 /**
@@ -28,8 +49,8 @@ const setFileName = element => {
  * @description Update ratio with data received asynchronously from controller
  */
 const updateRatios = () => {
-  document.addEventListener('ajax:success', event => {
-    const data = event.detail[0];
+  document.addEventListener('ajax:success', e => {
+    const data = e.detail[0];
     const before = data.before;
     const after = data.after;
     const realPieChart = Chartkick.charts['real-pie-chart'];
@@ -116,26 +137,53 @@ function disabled (e) {
 }
 
 function handleDrop (e) {
-  overlay.textContent = 'The file is being prepared for importing'
+  // If a file type is csv
+  const ext = getExtension(e.dataTransfer.files[0].name);
+  if (ext.toLowerCase() != 'csv') {
+    alert('Invalid file type of a selected');
+    disabled();
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  }
+
+  overlay.textContent = 'Now importing the file...';
+
   let formData = new FormData();
   formData.append('file', e.dataTransfer.files[0]);
 
   let xhr = new XMLHttpRequest();
   xhr.onreadystatechange = () => {
-    if (xhr.readyState == 4 && xhr.status == 200) {
-      console.warn(xhr.responseText);
+    if (xhr.readyState == 4) {
+      switch (xhr.status) {
+        case 200:
+          location.reload();
+          break;
+        case 500:
+          disabled();
+          
+          let messages = document.createElement('p');
+          messages.id = 'import-error';
+          messages.textContent = JSON.parse(xhr.responseText)['alert'];
+
+          const importFile = document.querySelector('#import-file');
+          if (importFile.lastChild) {
+            importFile.lastChild.remove();
+          }
+          importFile.appendChild(messages);
+      }
     }
-    location.reload();
   }
   xhr.open('POST', '/funds/import', false);
+  xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
   xhr.send(formData);
 }
 
 /**
- * @function handleDragDrop
- * @description Drag'n'drop CSV file on window to import
+ * @function acceptDragDrop
+ * @description Accept drag'n'drop CSV file on window to import
  */
-const handleDragDrop = () => {
+const acceptDragDrop = () => {
   const overlay = document.querySelector('#overlay');
 
   ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -147,11 +195,9 @@ const handleDragDrop = () => {
   overlay.addEventListener('drop', { handleEvent: handleDrop, target: overlay });
 }
 
-document.addEventListener('turbolinks:load', event => {
-  checkSelectFile();
-  document.querySelector('#file').addEventListener('change', event => {
-    setFileName(event.target);
-  });
+document.addEventListener('turbolinks:load', e => {
+  setFileName();
+  checkFile();
   updateRatios();
-  handleDragDrop();
+  acceptDragDrop();
 });

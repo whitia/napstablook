@@ -3,18 +3,19 @@
 section#funds
   #overlay Drop CSV file here
   .container
-    .content
+    #import-file.content
       h3 1. Import file
-      p Import CSV file containing investment trust you own. Click bellow textbox and choose CSV file, or drag'n'drop CSV file on the this window.
+      p Import CSV file containing investment trust you own. Click bellow textbox and select CSV file, or drag'n'drop CSV file on the this window.
       = form_with url: funds_import_path, local: true, multipart: true, id: 'form-import' do |form|
         .form-group.form-import
-          = form.text_field :file_name, placeholder: 'Click here to choose file to import',
+          = form.text_field :file_name, placeholder: 'Click here to select CSV file to import',
                                         onclick: 'javascript:document.querySelector("#file").click();'
-          = form.file_field :file, style: 'display: none;'
-          = form.submit :Import, id: 'submit', data: { confirm: 'Really?', 'disable-with': 'Importing' }
-    .content
+          = form.file_field :file, accept: '.csv', style: 'display: none;'
+          = form.submit :Import, id: 'submit'
+      p#import-error = flash[:danger]
+    #list-of-invest.content
       h3 2. List of investment trust
-      p Set class of investment trust from dropdown list.
+      p Choose class of investment trust from dropdown list.
       - if @funds.present?
         .charts
           table.list-of-invest
@@ -53,7 +54,7 @@ section#funds
                   = @sum[:difference].to_s(:delimited)
                   .percent = "(#{((@sum[:difference]/@sum[:purchase].to_f) * 100).round(2)}%)"
                 td
-    .content
+    #list-of-ratio.content
       h3 3. List of ratio
       p Set value of ideal, and comparison real and ideal with updated table chart and pie charts. Set value of capital increase, and also be able to simulate rebalancing of overall ratio.
       - if @funds.present?
