@@ -40,7 +40,8 @@ const checkFile = () => {
     }
 
     overlay.textContent = 'Now importing the file...';
-    enabled();
+    document.querySelector('#overlay').style.filter = 'opacity(1)';
+    document.querySelector('#overlay').style.visibility = 'visible';
   });
 }
 
@@ -122,18 +123,18 @@ const updateRatios = () => {
 }
 
 function preventDefaults (e) {
-  e.preventDefault()
-  e.stopPropagation()
+  e.preventDefault();
+  e.stopPropagation();
 }
 
 function enabled (e) {
-  overlay.style.filter = 'opacity(1)';
-  overlay.style.visibility = 'visible';
+  this.target.style.filter = 'opacity(1)';
+  this.target.style.visibility = 'visible';
 }
 
 function disabled (e) {
-  overlay.style.filter = 'opacity(0)';
-  overlay.style.visibility = 'hidden';
+  this.target.style.filter = 'opacity(0)';
+  this.target.style.visibility = 'hidden';
 }
 
 function setErrorMessage (message) {
@@ -152,10 +153,13 @@ function handleDrop (e) {
   // If a file type is csv
   const ext = getExtension(e.dataTransfer.files[0].name);
   if (ext.toLowerCase() != 'csv') {
-    disabled();
-    setErrorMessage('Invalid file type of a selected');
     e.preventDefault();
     e.stopPropagation();
+
+    document.querySelector('#overlay').style.filter = 'opacity(0)';
+    document.querySelector('#overlay').style.visibility = 'hidden';
+
+    setErrorMessage('Invalid file type');
     return false;
   }
 
@@ -172,19 +176,23 @@ function handleDrop (e) {
           location.reload();
           break;
         case 500:
-          disabled();
+          document.querySelector('#overlay').style.filter = 'opacity(0)';
+          document.querySelector('#overlay').style.visibility = 'hidden';
           setErrorMessage(JSON.parse(xhr.responseText)['alert']);
+          break;
+        default:
+          break;
       }
     }
   }
-  xhr.open('POST', '/funds/import', false);
+  xhr.open('POST', '/funds/import');
   xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
   xhr.send(formData);
 }
 
 /**
  * @function acceptDragDrop
- * @description Accept drag'n'drop CSV file on window to import
+ * @description Accept CSV file to import on window with drag'n'drop
  */
 const acceptDragDrop = () => {
   const overlay = document.querySelector('#overlay');
