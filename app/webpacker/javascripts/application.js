@@ -1,4 +1,24 @@
 /**
+ * @function readyTablesorter
+ * @description Ready Tablesorter Plugin
+ */
+const readyTablesorter = () => {
+  $('.list-of-invest').tablesorter({
+    sortReset: true,
+    headers: {
+      5: { sorter: false },
+    }
+  });
+  $('.list-of-ratio').tablesorter({
+    sortReset: true,
+    headers: {
+      3: { sorter: false },
+      5: { sorter: false },
+    }
+  });
+}
+
+/**
  * @function setFileName
  * @param {*} element File field
  * @description Set selected import file to value of textbox field
@@ -207,6 +227,9 @@ const acceptDragDrop = () => {
 }
 
 document.addEventListener('turbolinks:load', e => {
+  // Vendor scripts
+  readyTablesorter();
+
   setFileName();
   checkFile();
   updateRatios();

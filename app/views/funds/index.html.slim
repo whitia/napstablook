@@ -15,17 +15,17 @@ section#funds
       p#import-error = flash[:danger]
     #list-of-invest.content
       h3 2. List of investment trust
-      p Choose class of investment trust from dropdown list.
+      p Can sort table to click on header with <i class="fas fa-sort" style="color: var(--color-2);"></i> (clicking to sort a third time will reset the sort). Choose class of investment trust from dropdown list.
       - if @funds.present?
         .charts
-          table.list-of-invest
+          table.list-of-invest.tablesorter
             thead
               tr
-                th[width="12%"] Type
-                th[width="60%"] Name
-                th[width="7%"] Purchase
-                th[width="7%"] Valuation
-                th[width="7%"] Difference
+                th.sortable[width="12%"] Type
+                th.sortable[width="60%"] Name
+                th.sortable[width="7%"] Purchase
+                th.sortable[width="7%"] Valuation
+                th.sortable[width="7%"] Difference
                 th[width="7%"] Class
             tbody
               - @funds.each do |fund|
@@ -45,15 +45,16 @@ section#funds
                                                     url: funds_set_category_path,
                                                     params: 'id=' + fund.id.to_s,
                                                     type: :json }
+            table.summary  
               tr
-                td
-                td
-                td.text-right = @sum[:purchase].to_s(:delimited)
-                td.text-right = @sum[:valuation].to_s(:delimited)
-                td.text-right[class="#{'text-red' if @sum[:difference] < 0}"]
+                td[width="12%"]
+                td[width="60%"]
+                td.text-right[width="7%"] = @sum[:purchase].to_s(:delimited)
+                td.text-right[width="7%"] = @sum[:valuation].to_s(:delimited)
+                td.text-right[width="7%", class="#{'text-red' if @sum[:difference] < 0}"]
                   = @sum[:difference].to_s(:delimited)
                   .percent = "(#{((@sum[:difference]/@sum[:purchase].to_f) * 100).round(2)}%)"
-                td
+                td[width="7%"]
     #list-of-ratio.content
       h3 3. List of ratio
       p Set value of ideal, and comparison real and ideal with updated table chart and pie charts. Set value of capital increase, and also be able to simulate rebalancing of overall ratio.
@@ -62,17 +63,17 @@ section#funds
           table.list-of-ratio
             thead
               tr
-                th[width="10%"] Class
-                th[width="15%"] Purchase
-                th[width="15%"] Valuation
+                th.sortable[width="10%", class="{sorter: 'metadata'}"] Class
+                th.sortable[width="15%"] Purchase
+                th.sortable[width="15%"] Valuation
                 th[width="15%"] Increase
-                th[width="15%"] Real ratio
+                th.sortable[width="15%"] Real ratio
                 th[width="15%"] Ideal ratio
-                th[width="15%"] Difference
+                th.sortable[width="15%"] Difference
             tbody
-              - @ratios.each do |ratio|
+              - @ratios.each_with_index do |ratio, i|
                 tr
-                  td = ratio[0]
+                  td[class="{sortValue: #{i}}"] = ratio[0]
                   td.text-right[id="#{ratio[0]}_Purchase"] = ratio[1][:purchase].to_s(:delimited)
                   td.text-right[id="#{ratio[0]}_Valuation"] = ratio[1][:valuation].to_s(:delimited)
                   td

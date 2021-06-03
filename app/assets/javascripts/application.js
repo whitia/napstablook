@@ -12,6 +12,9 @@
 //
 //= require rails-ujs
 //= require turbolinks
+//= require jquery.min
+//= require jquery.tablesorter.min
+//= require jquery.metadata.min
 //= require Chart.bundle
 //= require chartkick
 //= require_tree .

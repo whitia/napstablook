@@ -83,11 +83,14 @@
           }
           .charts {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
-            .list-of-invest { flex-basis: 100%; }
-            .list-of-ratio { flex-basis: 75%; }
+            .list-of-invest, .summary { flex-basis: 100%; }
+            .list-of-ratio { flex-basis: 70%; }
+            .summary tbody tr { border: 0 !important; }
             .list-of-invest,
-            .list-of-ratio {
+            .list-of-ratio,
+            .summary {
               thead {
                 tr {
                   border-bottom: 1px solid #dfdfdf;
@@ -95,16 +98,25 @@
                     padding: 16px 8px;
                     font-size: .8rem;
                     text-align: left;
+                    &.sortable {
+                      cursor: pointer;
+                      .tablesorter-header-inner::after {
+                        content: '\f0dc';
+                        margin-left: 4px;
+                        color: var(--color-2);
+                        font-size: .75rem;
+                        font-weight: 900;
+                        font-family: 'Font Awesome 5 Free';
+                      }
+                    }
                   }
                 }
               }
               tbody {
                 tr {
                   transition: .25s;
+                  border-bottom: 1px solid #dfdfdf;
                   &:hover { background-color: #f8f8f8; }
-                  &:not(:last-of-type) {
-                    border-bottom: 1px solid #dfdfdf;
-                  }
                   td {
                     padding: 16px 8px;
                     font-size: .8rem;
