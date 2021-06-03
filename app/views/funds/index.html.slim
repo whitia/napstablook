@@ -15,7 +15,7 @@ section#funds
       p#import-error = flash[:danger]
     #list-of-invest.content
       h3 2. List of investment trust
-      p Can sort table to click on header with <i class="fas fa-sort" style="color: var(--color-2);"></i> (clicking to sort a third time will reset the sort). Choose class of investment trust from dropdown list.
+      p List is able to sort to click on header with <i class="fas fa-sort" style="color: var(--color-2);"></i> (clicking to sort a third time will reset the sort). Choose class of investment trust from dropdown list will updated list of ratio.
       - if @funds.present?
         .charts
           table.list-of-invest.tablesorter
