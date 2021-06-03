@@ -5,12 +5,14 @@
 const readyTablesorter = () => {
   $('.list-of-invest').tablesorter({
     sortReset: true,
+    sortInitialOrder: 'desc',
     headers: {
       5: { sorter: false },
     }
   });
   $('.list-of-ratio').tablesorter({
     sortReset: true,
+    sortInitialOrder: 'desc',
     headers: {
       3: { sorter: false },
       5: { sorter: false },
