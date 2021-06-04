@@ -1,8 +1,8 @@
 /**
- * @function readyTablesorter
+ * @function onTablesorterReady
  * @description Ready Tablesorter Plugin
  */
-const readyTablesorter = () => {
+const onTablesorterReady = () => {
   $('.list-of-invest').tablesorter({
     sortReset: true,
     sortInitialOrder: 'desc',
@@ -208,7 +208,7 @@ function handleDrop (e) {
     }
   }
   xhr.open('POST', '/funds/import');
-  
+
   const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
   xhr.setRequestHeader('X-CSRF-Token', token);
   xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
@@ -234,7 +234,7 @@ const acceptDragDrop = () => {
 
 document.addEventListener('turbolinks:load', e => {
   // Vendor scripts
-  readyTablesorter();
+  onTablesorterReady();
 
   setFileName();
   checkFile();
