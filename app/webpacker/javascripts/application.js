@@ -208,7 +208,11 @@ function handleDrop (e) {
     }
   }
   xhr.open('POST', '/funds/import');
+  
+  const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  xhr.setRequestHeader('X-CSRF-Token', token);
   xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
   xhr.send(formData);
 }
 
