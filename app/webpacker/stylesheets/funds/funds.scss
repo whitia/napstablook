@@ -2,6 +2,7 @@
   main {
     #funds {
       padding: 160px 0;
+      #overlay { display: none; }
       .container {
         flex-wrap: wrap;
         .content {
@@ -63,7 +64,8 @@
             flex-wrap: wrap;
             justify-content: space-between;
             .list-of-invest,
-            .list-of-ratio {
+            .list-of-ratio,
+            .summary {
               flex-basis: 100%;
               width: calc(100vw - 16px * 2);
               display: block;
@@ -77,6 +79,17 @@
                     padding: 16px 8px;
                     font-size: .8rem;
                     text-align: left;
+                    &.sortable {
+                      cursor: pointer;
+                      .tablesorter-header-inner::after {
+                        content: '\f0dc';
+                        margin-left: 4px;
+                        color: var(--color-2);
+                        font-size: .75rem;
+                        font-weight: 900;
+                        font-family: 'Font Awesome 5 Free';
+                      }
+                    }
                   }
                 }
               }
