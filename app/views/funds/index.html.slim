@@ -49,11 +49,12 @@ section#funds
               tr
                 td[width="12%"]
                 td[width="60%"]
-                td.text-right[width="7%"] = @sum[:purchase].to_s(:delimited)
-                td.text-right[width="7%"] = @sum[:valuation].to_s(:delimited)
-                td.text-right[width="7%", class="#{'text-red' if @sum[:difference] < 0}"]
-                  = @sum[:difference].to_s(:delimited)
-                  .percent = "(#{((@sum[:difference]/@sum[:purchase].to_f) * 100).round(2)}%)"
+                td.text-right[width="7%"] = @funds.sum(:purchase).to_s(:delimited)
+                td.text-right[width="7%"] = @funds.sum(:valuation).to_s(:delimited)
+                - difference = @funds.sum(:valuation) - @funds.sum(:purchase)
+                td.text-right[width="7%", class="#{'text-red' if difference < 0}"]
+                  = difference.to_s(:delimited)
+                  .percent = "(#{((difference / @funds.sum(:purchase).to_f) * 100).round(2)}%)"
                 td[width="7%"]
     #list-of-ratio.content
       h3 3. List of ratio

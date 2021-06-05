@@ -12,22 +12,10 @@ class FundsController < ApplicationController
       @colors << category.color
     end
 
-    # Summaries
-    @sum = Hash.new
-    @sum[:purchase] = 0
-    @sum[:valuation] = 0
-    @funds.each do |fund|
-      @sum[:purchase] += fund.purchase
-      @sum[:valuation] += fund.valuation
-    end
-    @sum[:difference] = @sum[:valuation] - @sum[:purchase]
-
     # Ratios
     @ratios = Hash.new { |h,k| h[k] = {} }
     Category.all.each do |category|
       ratio = Ratio.where(user_id: current_user.id, category: category.name)
-
-      @ratios[category.name][:color] = category.color
 
       @ratios[category.name][:purchase] = @funds.where(category: category.name).sum(:purchase)
       @ratios[category.name][:valuation] = @funds.where(category: category.name).sum(:valuation) + \
