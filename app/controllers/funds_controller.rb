@@ -23,7 +23,7 @@ class FundsController < ApplicationController
 
       valuation = @ratios[category.name][:valuation]
       @ratios[category.name][:increase] = (ratio.present? ? (ratio.first.increase.nil? ? 0 : ratio.first.increase) : 0)
-      @ratios[category.name][:real] = 0 < valuation ? (valuation.to_f / @sum[:valuation].to_f * 100).round(3) : 0
+      @ratios[category.name][:real] = 0 < valuation ? (valuation.to_f / (@funds.sum(:valuation)).to_f * 100).round(3) : 0
       @ratios[category.name][:ideal] = ratio.present? ? ratio.first.value : 0.0
       @ratios[category.name][:difference] = (@ratios[category.name][:real] - @ratios[category.name][:ideal]).round(3)
     end
