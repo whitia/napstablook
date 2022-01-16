@@ -2,9 +2,7 @@
   "name": "fund-list",
   "private": true,
   "dependencies": {
-    "@rails/webpacker": "5.4.3",
-    "chokidar": "3.5.1",
-    "css-select": "4.2.1"
+    "@rails/webpacker": "^5.4.3"
   },
   "devDependencies": {
     "webpack-dev-server": "^4.7.3"
