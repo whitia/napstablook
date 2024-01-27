@@ -12,14 +12,14 @@
 
 ActiveRecord::Schema.define(version: 2019_10_03_062336) do
 
-  create_table "categories", force: :cascade do |t|
+  create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "color"
   end
 
-  create_table "funds", force: :cascade do |t|
+  create_table "funds", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "category"
     t.string "account"
@@ -27,13 +27,13 @@ ActiveRecord::Schema.define(version: 2019_10_03_062336) do
     t.integer "valuation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
+    t.bigint "user_id"
     t.integer "difference"
     t.index ["user_id"], name: "index_funds_on_user_id"
   end
 
-  create_table "ratios", force: :cascade do |t|
-    t.integer "user_id"
+  create_table "ratios", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id"
     t.string "category"
     t.float "value"
     t.datetime "created_at", null: false
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 2019_10_03_062336) do
     t.index ["user_id"], name: "index_ratios_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
