@@ -20,8 +20,11 @@ test:
   <<: *default
   database: db/test.sqlite3
 
-production:
-  <<: *default
-  adapter: postgresql
-  encoding: unicode
-  pool: 5
+ production:
+   <<: *default
+   username: <%= Rails.application.credentials.planetscale&.fetch(:username) %>
+   password: <%= Rails.application.credentials.planetscale&.fetch(:password) %>
+   database: <%= Rails.application.credentials.planetscale&.fetch(:database) %>
+   host: <%= Rails.application.credentials.planetscale&.fetch(:host) %>
+   ssl_mode: verify_identity
+   sslca: "/etc/ssl/certs/ca-certificates.crt"
