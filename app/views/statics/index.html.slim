@@ -7,11 +7,11 @@ section#home
         | You can manage own investment trust easily, also and simulate rebalancing.
       - if logged_in?
         .message
-          | You sign in as 
+          | You sign in as
           = current_user.email
           |  now.
           =< link_to 'Start', funds_path
-          | , or 
+          | , or
           = link_to 'sign out', signout_path, method: :delete, data: { confirm: 'Really?' }
           | .
       - else
